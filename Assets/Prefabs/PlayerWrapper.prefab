@@ -128,7 +128,7 @@ Rigidbody:
   m_GameObject: {fileID: 7817210862397954637}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 2
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -209,7 +209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f404527f99d68043802e322f8eacc8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 8
 --- !u!1 &8394098261912002289
 GameObject:
   m_ObjectHideFlags: 0
@@ -315,8 +315,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b01e68a797410cf4d96941c742b568b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraPosition: {fileID: 7096075687016069713}
-  sensitivity: 10
+  sensitivity: 3
 --- !u!1 &9081115288869139815
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,13 +10,12 @@ public class Dijkstra
 
     public Dijkstra(Maze m)
     {
-        Debug.Log("Dijkstra Init");
+        //Debug.Log("Dijkstra Init");
         maze = m;
         nodes = new List<Node>();
         MazeCell[,] cellsMatrix = maze.GetCells();
 
         List<MazeCell> cells = new List<MazeCell>();
-        int current = 0;
         foreach (var value in cellsMatrix)
         {
             cells.Add(value);
@@ -113,7 +112,7 @@ public class Dijkstra
     {
         this.origin = origin;
         this.destination = destination;
-        Debug.Log("Path from " + origin.coordinates + " to " + destination.coordinates);
+        //Debug.Log("Path from " + origin.coordinates + " to " + destination.coordinates);
         CalculatePath();
         List<MazeCell> path = GetPath();
         Reset();

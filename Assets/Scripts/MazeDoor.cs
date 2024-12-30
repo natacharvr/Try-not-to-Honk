@@ -8,6 +8,7 @@ public class MazeDoor : MazePassage
     public float angleOpen, closeRot, speed;
     private float openRot;
     public bool opening;
+    public GameObject collider;
 
     private MazeDoor OtherSideOfDoor
     {
@@ -84,6 +85,10 @@ public class MazeDoor : MazePassage
     {
         openRot = angleOpen;
         opening = !opening;
+        if (collider != null)
+        {
+            collider.SetActive(!opening);
+        }
     }
 
     void ToggleDoor()

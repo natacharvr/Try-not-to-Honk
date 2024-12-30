@@ -18,7 +18,7 @@ public class Helper : MonoBehaviour
 
     public void SetPlayer(Player player)
     {
-        Debug.Log("In helper : " + player);
+        //Debug.Log("In helper : " + player);
         this.player = player;
     }
 

@@ -13,8 +13,7 @@ public class Player: MonoBehaviour
     public float speed = 0;
     private MazeCell currentCell;
     private Maze mazeInstance;
-  
-    //private bool win = false;
+
     //private new AudioSource audio;
     //private AudioSource audioWin;
 
@@ -24,7 +23,6 @@ public class Player: MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         rb = GetComponent<Rigidbody>();
         //count = 0;
         //AudioSource[] audios = GetComponents<AudioSource>();
@@ -36,7 +34,6 @@ public class Player: MonoBehaviour
         //SetCountText();
         //SetHighScoreText();
         //endPanel.SetActive(false);
-
     }
 
     void OnMove(InputValue movementValue)
@@ -63,9 +60,6 @@ public class Player: MonoBehaviour
         IntVector2 size = mazeInstance.size;
         int xPos = Mathf.FloorToInt(transform.position.x + size.x * 0.5f);
         int zPos = Mathf.FloorToInt(transform.position.z + size.z * 0.5f);
-        //Debug.Log("Player position x: " + xPos);
-        //Debug.Log("Player position y: " + zPos);
-        //Debug.Log("Current cell position: " + currentCell.coordinates.x +","+ currentCell.coordinates.z);
         SetCell(mazeInstance.GetCell(new IntVector2(xPos, zPos)));
     }
 
@@ -83,10 +77,10 @@ public class Player: MonoBehaviour
     //}
 
 
-    public void Replay()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
+    //public void Replay()
+    //{
+    //    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    //}
 
     public void SetCell(MazeCell cell)
     {
@@ -94,10 +88,12 @@ public class Player: MonoBehaviour
         {
             currentCell.OnPlayerExited();
         }
-        //Debug.Log(cell.ToString());
+
+        
         currentCell = cell;
         cell.OnPlayerEntered();
     }
+
     public void SetLocation(MazeCell cell)
     {
         transform.position = cell.transform.localPosition;
@@ -116,7 +112,7 @@ public class Player: MonoBehaviour
     //}
     public MazeCell GetCurrentCell()
     {
-        Debug.Log(currentCell);
+        //Debug.Log(currentCell);
         return currentCell;
     }
 

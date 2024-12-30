@@ -101,7 +101,7 @@ public class Maze : MonoBehaviour
 
         for (int i = 0; i < rooms.Count; i++)
         {
-            //rooms[i].Hide();
+            rooms[i].Hide();
         }
         //IntVector2 coordinates = RandomCoordinates;
         //while (ContainsCoordinates(coordinates) && GetCell(coordinates) == null)
@@ -130,7 +130,6 @@ public class Maze : MonoBehaviour
             return;
         }
         MazeDirection direction = currentCell.RandomUninitializedDirection;
-        //MazeDirection direction = MazeDirections.RandomValue;
         IntVector2 coordinates = currentCell.coordinates + direction.ToIntVector2();
         if (ContainsCoordinates(coordinates) && GetCell(coordinates) == null)
         {
@@ -144,13 +143,11 @@ public class Maze : MonoBehaviour
             else
             {
                 CreateWall(currentCell, neighbor, direction);
-                //activeCells.RemoveAt(currentIndex);
             }
         }
         else
         {
             CreateWall(currentCell, null, direction);
-            //activeCells.RemoveAt(currentIndex);
         }
     }
 
@@ -218,14 +215,12 @@ public class Maze : MonoBehaviour
         startCell.name = "Start Cell " + start.x + ", " + start.z;
         startCell.transform.parent = transform;
         startCell.transform.localPosition = new Vector3(start.x - size.x * 0.5f + 0.5f, 0f, start.z - size.z * 0.5f + 0.5f);
-        //cells[start.x, start.z] = startCell;
 
         endCell = Instantiate(cellPrefab) as MazeCell;
         endCell.coordinates = end;
         endCell.name = "End Cell " + end.x + ", " + end.z;
         endCell.transform.parent = transform;
         endCell.transform.localPosition = new Vector3(end.x - size.x * 0.5f + 0.5f, 0f, end.z - size.z * 0.5f + 0.5f);
-        //cells[end.x, end.z] = endCell;
 
         MazeCell currentCell;
         IntVector2 coordinates;
@@ -242,7 +237,6 @@ public class Maze : MonoBehaviour
 
         for (MazeDirection direction = MazeDirection.North; direction <= MazeDirection.West; direction++)
         { 
-            //Debug.Log(direction);
             currentCell = startCell;
             coordinates = currentCell.coordinates + direction.ToIntVector2();
             neighbor = GetCell(coordinates);
