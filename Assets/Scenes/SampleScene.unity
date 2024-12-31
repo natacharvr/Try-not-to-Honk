@@ -1544,6 +1544,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spiderPrefab: {fileID: -2289029361919310751, guid: 31f8d436f049fb34da0d4144959ff27d, type: 3}
+  SpiderNb: 10
+  SnakeNb: 10
   snakePrefab: {fileID: 7235194266431274715, guid: eaaa293153989c1439edf647d6347fe0, type: 3}
 --- !u!4 &1492044407
 Transform:

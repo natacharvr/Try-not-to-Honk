@@ -8,6 +8,8 @@ public class MonsterManager : MonoBehaviour
     private Player player;
     public Spider spiderPrefab;
     private List<Spider> spiders;
+    public int SpiderNb;
+    public int SnakeNb;
 
     public Snake snakePrefab;
     private List<Snake> snakes;
@@ -34,28 +36,26 @@ public class MonsterManager : MonoBehaviour
     public void BeginGame()
     {
         // Monsters setup
-        spiders.Add(Instantiate(spiderPrefab) as Spider);
-        spiders.Add(Instantiate(spiderPrefab) as Spider);
-        spiders.Add(Instantiate(spiderPrefab) as Spider);
 
-        foreach (Spider s in spiders)
+        //Spiders
+        for (int i = 0; i < SpiderNb; i++)
         {
+            Spider s = Instantiate(spiderPrefab) as Spider;
+            spiders.Add(s);
             s.SetManager(this);
             s.SetMaze(maze);
             s.SetLocation(maze.GetCell(maze.RandomCoordinates));
         }
 
-        snakes.Add(Instantiate(snakePrefab) as Snake);
-        snakes.Add(Instantiate(snakePrefab) as Snake);
-        snakes.Add(Instantiate(snakePrefab) as Snake);
-
-        foreach (Snake s in snakes)
+        // Snakes
+        for (int i = 0; i < SpiderNb; i++)
         {
+            Snake s = Instantiate(snakePrefab) as Snake;
+            snakes.Add(s);
             s.SetManager(this);
             s.SetMaze(maze);
             s.SetLocation(maze.GetCell(maze.RandomCoordinates));
         }
-
     }
 
     public void EndGame()
