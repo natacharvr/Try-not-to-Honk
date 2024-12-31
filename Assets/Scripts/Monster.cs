@@ -30,6 +30,7 @@ public abstract class Monster : MonoBehaviour
     {
         transform.position = cell.transform.localPosition;
         currentCell = cell;
+        cell.room.Add(this);
     }
 
 
@@ -89,5 +90,15 @@ public abstract class Monster : MonoBehaviour
         float dx = a.x - b.x;
         float dz = a.z - b.z;
         return Mathf.Sqrt(dx * dx + dz * dz);
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void Show()
+    {
+        gameObject.SetActive(true);
     }
 }

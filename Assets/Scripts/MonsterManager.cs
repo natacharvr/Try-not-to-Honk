@@ -82,7 +82,6 @@ public class MonsterManager : MonoBehaviour
     public MazeCell RandomRoomDestination(MazeRoom room)
     {
         return room.RandomCell();
-        
     }
 
     public List<MazeCell> Path(MazeCell currentCell, MazeCell targetCell)
