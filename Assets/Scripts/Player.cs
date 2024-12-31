@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-//using TMPro;
+using TMPro;
 
 public class Player: MonoBehaviour
 {
@@ -13,6 +13,7 @@ public class Player: MonoBehaviour
     public float speed = 0;
     private MazeCell currentCell;
     private Maze mazeInstance;
+    public GameUI gameUI;
 
     //private new AudioSource audio;
     //private AudioSource audioWin;
@@ -52,6 +53,7 @@ public class Player: MonoBehaviour
     {
         Vector3 movement = new Vector3(movementX, 0.0f, movementY);
         movement = transform.TransformDirection(movement);
+        //Debug.Log("Player movement = " + movement * speed);
         rb.AddForce(movement * speed);
     }
 
@@ -116,4 +118,16 @@ public class Player: MonoBehaviour
         return currentCell;
     }
 
+    public void Hit(int damage)
+    {
+        gameUI.Hit(damage);
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Monster")
+        {
+            Hit(10);
+        }
+    }
 }

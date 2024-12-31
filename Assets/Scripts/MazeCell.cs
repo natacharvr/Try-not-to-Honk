@@ -85,4 +85,16 @@ public class MazeCell : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+
+    public MazeDirection GetPassageDirection(MazeCell target)
+    {
+        foreach (MazeCellEdge edge in edges)
+        {
+            if (edge.otherCell != null && edge.otherCell.coordinates == target.coordinates)
+            {
+                return edge.direction;
+            }
+        }
+        throw new System.InvalidOperationException("Target is not a passage of this cell.");
+    }
 }

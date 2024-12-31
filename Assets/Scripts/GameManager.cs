@@ -15,10 +15,9 @@ public class GameManager : MonoBehaviour
     public MonsterManager monsterManager;
     public GameObject endPanelWin;
     public GameObject endPanelLoose;
-    public float MaxTime = 10.0f;
-    private float timer;
-    private float startTime;
-    public TextMeshProUGUI timerText;
+    public GameUI gameUI;
+    public float MaxTime = 60f;
+
 
     private Player playerInstance;
     private MouseLookAround playerCameraInstance;
@@ -37,15 +36,14 @@ public class GameManager : MonoBehaviour
             RestartGame();
         }
 
+
         if (playerInstance != null)
         {
-            timer -= Time.deltaTime;
-            SetTimeText();
             bool win = playerInstance.GetCurrentCell().coordinates == mazeInstance.GetDestination().coordinates;
             if (win) {
                 Win();
             }
-            else if (timer <= 0)
+            else if (gameUI.Loose())
             {
                 Loose();
             }
@@ -59,7 +57,8 @@ public class GameManager : MonoBehaviour
         //UI
         endPanelWin.SetActive(false);
         endPanelLoose.SetActive(false);
-        timerText.gameObject.SetActive(false);
+        gameUI.gameObject.SetActive(false);
+        //timerText.gameObject.SetActive(false);
 
         Camera.main.clearFlags = CameraClearFlags.Skybox;
         Camera.main.rect = new Rect(0f, 0f, 1f, 1f);
@@ -72,6 +71,7 @@ public class GameManager : MonoBehaviour
         playerInstance = Instantiate(playerPrefab) as Player;
         playerInstance.SetLocation(mazeInstance.GetCell(mazeInstance.startCoordinates));
         playerInstance.SetMaze(mazeInstance);
+        playerInstance.gameUI = gameUI;
         //player camera
         playerCameraInstance = Instantiate(playerCamera) as MouseLookAround;
         playerCameraInstance.SetPlayer(playerInstance);
@@ -90,9 +90,8 @@ public class GameManager : MonoBehaviour
         Camera.main.rect = new Rect(0f, 0f, 0.5f, 0.5f);
 
         // Timer
-        timerText.gameObject.SetActive(true);
-        startTime = Time.time;
-        timer = MaxTime;
+        gameUI.Initialize(MaxTime);
+        gameUI.gameObject.SetActive(true);
 
     }
 
@@ -101,7 +100,7 @@ public class GameManager : MonoBehaviour
         endPanelWin.SetActive(true);
         playerInstance.gameObject.SetActive(false);
         playerCameraInstance.gameObject.SetActive(false);
-        timerText.gameObject.SetActive(false);
+        gameUI.gameObject.SetActive(false);
     }
 
     public void Loose()
@@ -109,6 +108,7 @@ public class GameManager : MonoBehaviour
         endPanelLoose.SetActive(true);
         playerInstance.gameObject.SetActive(false);
         playerCameraInstance.gameObject.SetActive(false);
+        gameUI.gameObject.SetActive(false);
     }
 
     public void RestartGame()
@@ -127,8 +127,4 @@ public class GameManager : MonoBehaviour
         StartCoroutine(BeginGame());
     }
 
-    void SetTimeText()
-    {
-        timerText.text = timer .ToString("F0") + "S LEFT";
-    }
 }

@@ -1,3 +1,7 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
 [System.Serializable]
 public struct IntVector2
 {
@@ -27,5 +31,11 @@ public struct IntVector2
         return a.x != b.x || a.z != b.z;
     }
 
+    public static float Distance(IntVector2 a, IntVector2 b)
+    {
+        int dx = a.x - b.x;
+        int dz = a.z - b.z;
+        return Mathf.Sqrt(dx * dx + dz * dz);
+    }
 
 }

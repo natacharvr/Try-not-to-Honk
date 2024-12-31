@@ -101,7 +101,7 @@ public class Maze : MonoBehaviour
 
         for (int i = 0; i < rooms.Count; i++)
         {
-            rooms[i].Hide();
+            //rooms[i].Hide();
         }
         //IntVector2 coordinates = RandomCoordinates;
         //while (ContainsCoordinates(coordinates) && GetCell(coordinates) == null)

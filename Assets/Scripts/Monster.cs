@@ -9,6 +9,15 @@ public abstract class Monster : MonoBehaviour
     private MazeCell targetCell;
     private List<MazeCell> path;
     public float generationStepDelay;
+    private Rigidbody rb;
+    private Maze mazeInstance;
+    public float speed = 10f;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        //Debug.Log("rigidbody" + rb);
+    }
 
     public void SetManager(MonsterManager manager)
     {
@@ -19,38 +28,51 @@ public abstract class Monster : MonoBehaviour
     {
         transform.position = cell.transform.localPosition;
         currentCell = cell;
-        BeginGame();
     }
 
-    private void BeginGame()
-    {
-        StartCoroutine(Move());
-    }
 
     private void AskRandomDestination()
     {
         targetCell = manager.RandomDestination();
-        //Debug.Log(targetCell);
     }
 
-    private IEnumerator Move()
+    private void FixedUpdate()
     {
-        WaitForSeconds delay = new WaitForSeconds(generationStepDelay);
-        while (true)
+        while (path == null || path.Count <= 1)
         {
-            if (path != null && path.Count > 1)
-            {
-                currentCell = path[1];
-                path.RemoveAt(0);
-                transform.localPosition = currentCell.transform.localPosition;
-                transform.rotation = currentCell.transform.localRotation;
-            }
-            else
-            {
-                AskRandomDestination();
-                path = manager.Path(currentCell, targetCell);
-            }
-            yield return delay;
+            AskRandomDestination();
+            path = manager.Path(currentCell, targetCell);
         }
+        MazeDirection direction = currentCell.GetPassageDirection(path[1]);
+        Vector3 movement = new Vector3(direction.ToIntVector2().x, 0, direction.ToIntVector2().z);
+        transform.rotation = Quaternion.Euler(direction.ToIntVector2().x, 0, direction.ToIntVector2().z); //direction.ToRotation();
+        movement = transform.TransformDirection(movement);
+        //Debug.Log("Moving to " + path[1].coordinates.x + "," + path[1].coordinates.z);
+        //Debug.Log("Monster movement = " + movement*speed);
+        rb.AddForce(movement * speed);
+    }
+
+    void Update()
+    {
+        IntVector2 size = mazeInstance.size;
+        int xPos = Mathf.FloorToInt(transform.position.x + size.x * 0.5f);
+        int zPos = Mathf.FloorToInt(transform.position.z + size.z * 0.5f);
+        //Debug.Log("Current cell = " +xPos + "," + zPos);
+        SetCell(mazeInstance.GetCell(new IntVector2(xPos, zPos)));
+    }
+
+    public void SetCell(MazeCell cell)
+    {
+        if (cell.coordinates == path[1].coordinates)
+        {
+            //Debug.Log("Arrived at " + cell.coordinates);
+            path.RemoveAt(0);
+        }
+        currentCell = cell;
+    }
+
+    public void SetMaze(Maze maze)
+    {
+        mazeInstance = maze;
     }
 }

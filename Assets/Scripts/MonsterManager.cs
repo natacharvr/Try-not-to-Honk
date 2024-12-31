@@ -41,6 +41,7 @@ public class MonsterManager : MonoBehaviour
         foreach (Spider s in spiders)
         {
             s.SetManager(this);
+            s.SetMaze(maze);
             s.SetLocation(maze.GetCell(maze.RandomCoordinates));
         }
 
@@ -51,6 +52,7 @@ public class MonsterManager : MonoBehaviour
         foreach (Snake s in snakes)
         {
             s.SetManager(this);
+            s.SetMaze(maze);
             s.SetLocation(maze.GetCell(maze.RandomCoordinates));
         }
 
@@ -74,7 +76,6 @@ public class MonsterManager : MonoBehaviour
     public MazeCell RandomDestination()
     {
         IntVector2 coord = maze.RandomCoordinates;
-        //Debug.Log("random coordonneesssss : " + coord);
         return maze.GetCell(coord);
     }
 
