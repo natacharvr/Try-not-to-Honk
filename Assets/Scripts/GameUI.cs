@@ -52,4 +52,5 @@ public class GameUI : MonoBehaviour
     {
         greenLife.fillAmount = life / maxLife;
     }
+
 }

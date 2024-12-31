@@ -104,7 +104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   generationStepDelay: 1
-  speed: 5
+  speed: 12
 --- !u!54 &3964894513838815649
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -16,7 +16,8 @@ public class GameManager : MonoBehaviour
     public GameObject endPanelWin;
     public GameObject endPanelLoose;
     public GameUI gameUI;
-    public float MaxTime = 60f;
+    public float complexity;
+    private float MaxTime;
 
 
     private Player playerInstance;
@@ -90,7 +91,8 @@ public class GameManager : MonoBehaviour
         Camera.main.rect = new Rect(0f, 0f, 0.5f, 0.5f);
 
         // Timer
-        gameUI.Initialize(MaxTime);
+        MaxTime = CalculateTime();
+        gameUI.Initialize(MaxTime * complexity);
         gameUI.gameObject.SetActive(true);
 
     }
@@ -126,5 +128,8 @@ public class GameManager : MonoBehaviour
         monsterManager.EndGame();
         StartCoroutine(BeginGame());
     }
-
+    float CalculateTime()
+    {
+        return helper.GetPath(mazeInstance.GetOrigin(), mazeInstance.GetDestination()).Count;
+    }
 }

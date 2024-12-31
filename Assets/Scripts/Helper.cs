@@ -37,4 +37,9 @@ public class Helper : MonoBehaviour
             }
         }
     }
+
+    public List<MazeCell> GetPath(MazeCell from, MazeCell to)
+    {
+        return dijkstra.Path(from, to);
+    }
 }

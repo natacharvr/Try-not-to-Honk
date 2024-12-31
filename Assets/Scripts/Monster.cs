@@ -12,6 +12,7 @@ public abstract class Monster : MonoBehaviour
     private Rigidbody rb;
     private Maze mazeInstance;
     public float speed = 10f;
+    private float threshold = 0.1f;
 
     void Start()
     {
@@ -36,29 +37,35 @@ public abstract class Monster : MonoBehaviour
         targetCell = manager.RandomDestination();
     }
 
-    private void FixedUpdate()
+    //private void FixedUpdate()
+    //{
+    //    while (path == null || path.Count <= 1)
+    //    {
+    //        AskRandomDestination();
+    //        path = manager.Path(currentCell, targetCell);
+    //    }
+    //    MazeDirection direction = currentCell.GetPassageDirection(path[1]);
+    //    Vector3 movement = new Vector3(direction.ToIntVector2().x, 0, direction.ToIntVector2().z);
+    //    transform.rotation = Quaternion.Euler(direction.ToIntVector2().x, 0, direction.ToIntVector2().z); //direction.ToRotation();
+        
+    //    //Debug.Log("Moving to " + path[1].coordinates.x + "," + path[1].coordinates.z);
+    //    //Debug.Log("Monster movement = " + movement*speed);
+    //    rb.AddForce(movement * speed);
+    //}
+
+    void FixedUpdate()
     {
         while (path == null || path.Count <= 1)
         {
             AskRandomDestination();
             path = manager.Path(currentCell, targetCell);
         }
-        MazeDirection direction = currentCell.GetPassageDirection(path[1]);
-        Vector3 movement = new Vector3(direction.ToIntVector2().x, 0, direction.ToIntVector2().z);
-        transform.rotation = Quaternion.Euler(direction.ToIntVector2().x, 0, direction.ToIntVector2().z); //direction.ToRotation();
-        movement = transform.TransformDirection(movement);
-        //Debug.Log("Moving to " + path[1].coordinates.x + "," + path[1].coordinates.z);
-        //Debug.Log("Monster movement = " + movement*speed);
+        Vector3 direction = path[1].transform.position - transform.position;
+        direction.Normalize();
+        transform.rotation = Quaternion.Euler(0, 0, 0);
+        Vector3 movement = transform.TransformDirection(direction);
         rb.AddForce(movement * speed);
-    }
 
-    void Update()
-    {
-        IntVector2 size = mazeInstance.size;
-        int xPos = Mathf.FloorToInt(transform.position.x + size.x * 0.5f);
-        int zPos = Mathf.FloorToInt(transform.position.z + size.z * 0.5f);
-        //Debug.Log("Current cell = " +xPos + "," + zPos);
-        SetCell(mazeInstance.GetCell(new IntVector2(xPos, zPos)));
     }
 
     public void SetCell(MazeCell cell)
@@ -74,5 +81,23 @@ public abstract class Monster : MonoBehaviour
     public void SetMaze(Maze maze)
     {
         mazeInstance = maze;
+    }
+
+    void Update()
+    {
+        if ((path.Count > 1) && (Distance(transform.position, path[1].transform.position) < threshold))
+        {
+            IntVector2 size = mazeInstance.size;
+            int xPos = Mathf.FloorToInt(transform.position.x + size.x * 0.5f);
+            int zPos = Mathf.FloorToInt(transform.position.z + size.z * 0.5f);
+            SetCell(mazeInstance.GetCell(new IntVector2(xPos, zPos)));
+        }
+    }
+
+    float Distance(Vector3 a, Vector3 b)
+    {
+        float dx = a.x - b.x;
+        float dz = a.z - b.z;
+        return Mathf.Sqrt(dx * dx + dz * dz);
     }
 }
