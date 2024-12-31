@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6828080966610348219}
   - component: {fileID: 3451882794295273724}
   - component: {fileID: 2303111844558721264}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PlayerCam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,5 +105,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b01e68a797410cf4d96941c742b568b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraPosition: {fileID: 0}
   sensitivity: 10

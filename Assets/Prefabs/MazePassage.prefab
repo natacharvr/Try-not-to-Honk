@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3106277018391455767}
   - component: {fileID: 2431061213318437407}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: MazePassage
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -29,4 +29,9 @@ public class MazeRoom : ScriptableObject
             cells[i].Show();
         }
     }
+
+    public MazeCell RandomCell()
+    {
+        return cells[Random.Range(0, cells.Count)];
+    }
 }

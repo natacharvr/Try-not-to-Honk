@@ -79,6 +79,12 @@ public class MonsterManager : MonoBehaviour
         return maze.GetCell(coord);
     }
 
+    public MazeCell RandomRoomDestination(MazeRoom room)
+    {
+        return room.RandomCell();
+        
+    }
+
     public List<MazeCell> Path(MazeCell currentCell, MazeCell targetCell)
     {
         return dijkstra.Path(currentCell, targetCell);

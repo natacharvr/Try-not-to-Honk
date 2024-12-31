@@ -13,6 +13,7 @@ public abstract class Monster : MonoBehaviour
     private Maze mazeInstance;
     public float speed = 10f;
     private float threshold = 0.1f;
+    private MazeRoom room;
 
     void Start()
     {
@@ -34,24 +35,9 @@ public abstract class Monster : MonoBehaviour
 
     private void AskRandomDestination()
     {
-        targetCell = manager.RandomDestination();
+        //targetCell = manager.RandomDestination();
+        targetCell = manager.RandomRoomDestination(currentCell.room);
     }
-
-    //private void FixedUpdate()
-    //{
-    //    while (path == null || path.Count <= 1)
-    //    {
-    //        AskRandomDestination();
-    //        path = manager.Path(currentCell, targetCell);
-    //    }
-    //    MazeDirection direction = currentCell.GetPassageDirection(path[1]);
-    //    Vector3 movement = new Vector3(direction.ToIntVector2().x, 0, direction.ToIntVector2().z);
-    //    transform.rotation = Quaternion.Euler(direction.ToIntVector2().x, 0, direction.ToIntVector2().z); //direction.ToRotation();
-        
-    //    //Debug.Log("Moving to " + path[1].coordinates.x + "," + path[1].coordinates.z);
-    //    //Debug.Log("Monster movement = " + movement*speed);
-    //    rb.AddForce(movement * speed);
-    //}
 
     void FixedUpdate()
     {
@@ -62,10 +48,14 @@ public abstract class Monster : MonoBehaviour
         }
         Vector3 direction = path[1].transform.position - transform.position;
         direction.Normalize();
-        transform.rotation = Quaternion.Euler(0, 0, 0);
-        Vector3 movement = transform.TransformDirection(direction);
-        rb.AddForce(movement * speed);
+        if (direction.magnitude > 0.1f) // Avoid rotating for very small movements
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * 4); ;
+        }
 
+        //Vector3 movement = transform.TransformDirection(direction);
+        rb.AddForce(direction * speed);
     }
 
     public void SetCell(MazeCell cell)

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 381957674291460074}
   - component: {fileID: 3903661319364751630}
   - component: {fileID: 8855951899239468741}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114,7 +114,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 204988200711052886}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Hinge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,7 +151,7 @@ GameObject:
   - component: {fileID: 558468468616277061}
   - component: {fileID: 6650846201495714462}
   - component: {fileID: 7534517241199960530}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -255,7 +255,7 @@ GameObject:
   - component: {fileID: 6720269088311526128}
   - component: {fileID: 3808242002754941152}
   - component: {fileID: 8385937687452993243}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -339,7 +339,7 @@ GameObject:
   - component: {fileID: 2711917534487629198}
   - component: {fileID: 1684463678433827085}
   - component: {fileID: 5107014688716313125}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -442,7 +442,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6511128011305829187}
   - component: {fileID: 1008142852891369009}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MazeDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -502,7 +502,7 @@ GameObject:
   - component: {fileID: 622368988399551649}
   - component: {fileID: 2767711917938766280}
   - component: {fileID: 6711463326982491167}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -606,7 +606,7 @@ GameObject:
   - component: {fileID: 2317106228839423083}
   - component: {fileID: 2983215575700797881}
   - component: {fileID: 5068915858232477305}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -688,7 +688,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3948956959161036826}
   - component: {fileID: 6369520281071379510}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ColliderDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}

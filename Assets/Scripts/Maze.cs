@@ -24,6 +24,7 @@ public class Maze : MonoBehaviour
     public float doorProbability;
     public MazeRoomSettings[] roomSettings;
     public MazeRoomSettings extremities;
+    private List<MazeRoom> rooms = new List<MazeRoom>();
 
     public MazeCell GetDestination()
     {
@@ -190,7 +191,6 @@ public class Maze : MonoBehaviour
         }
     }
 
-    private List<MazeRoom> rooms = new List<MazeRoom>();
 
     private MazeRoom CreateRoom(int indexToExclude)
     {
