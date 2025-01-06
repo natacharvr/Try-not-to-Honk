@@ -6,22 +6,32 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    // maze
     public Maze mazePrefab;
     private Maze mazeInstance;
+
+    //player
     public Player playerPrefab;
     public MouseLookAround playerCamera;
-    public Spider spiderPrefab;
-    public Helper helper;
+    private Player playerInstance;
+    private MouseLookAround playerCameraInstance;
+
+    //monsters
     public MonsterManager monsterManager;
+
+    // stress manager
+    public StressManager stressManager;
+
+    // UI
     public GameObject endPanelWin;
     public GameObject endPanelLoose;
     public GameUI gameUI;
     public float complexity;
     private float MaxTime;
 
+    // Audio
+    [SerializeField] private AudioClip rainSound;
 
-    private Player playerInstance;
-    private MouseLookAround playerCameraInstance;
 
     // Start is called before the first frame update
     void Start()
@@ -78,9 +88,9 @@ public class GameManager : MonoBehaviour
         playerCameraInstance.SetPlayer(playerInstance);
 
         //Debug.Log("Player Instance " + playerInstance);
-        // helper
-        helper.SetPlayer(playerInstance);
-        helper.SetMaze(mazeInstance);
+        // stress manager
+        stressManager.SetPlayer(playerInstance);
+        stressManager.SetMaze(mazeInstance);
 
         // monsters
         monsterManager.SetMaze(mazeInstance);
@@ -94,6 +104,9 @@ public class GameManager : MonoBehaviour
         MaxTime = CalculateTime();
         gameUI.Initialize(MaxTime * complexity);
         gameUI.gameObject.SetActive(true);
+
+        // Audio 
+        SoundFXManager.instance.PlaySoundFXClip(rainSound, transform, 0.5f);
 
     }
 
@@ -130,6 +143,6 @@ public class GameManager : MonoBehaviour
     }
     float CalculateTime()
     {
-        return helper.GetPath(mazeInstance.GetOrigin(), mazeInstance.GetDestination()).Count;
+        return stressManager.GetPath(mazeInstance.GetOrigin(), mazeInstance.GetDestination()).Count;
     }
 }

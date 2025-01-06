@@ -5,11 +5,22 @@ using UnityEngine;
 public class MouseLookAround : MonoBehaviour
 {
     private Transform cameraPosition;
+    public GameObject particlesPrefabs;
+    private GameObject rain;
 
     float rotationX = 0f;
     float rotationY = 0f;
 
     public float sensitivity = 10f;
+
+    void Start()
+    {
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
+
+        rain = Instantiate(particlesPrefabs);
+        rain.transform.position = new Vector3(transform.position.x, 3, transform.position.z);
+    }
 
     // Update is called once per frame
     void LateUpdate()
@@ -22,11 +33,16 @@ public class MouseLookAround : MonoBehaviour
         transform.position = cameraPosition.position;
         //transform.localEulerAngles = new Vector3(rotationX, rotationY, rotationZ);
         //rotationY = Input.GetAxis("Mouse Z") * sensitivity;
-
+        rain.transform.position = new Vector3(transform.position.x, 3, transform.position.z);
     }
 
     public void SetPlayer(Player player)
     {
         cameraPosition = player.transform;
+    }
+
+    void OnDestroy()
+    {
+        Destroy(rain);
     }
 }

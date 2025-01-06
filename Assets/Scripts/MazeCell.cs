@@ -86,6 +86,13 @@ public class MazeCell : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    public void SetHelping(bool truth_value, MazeDirection direction)
+    {
+        if (truth_value)
+        transform.GetChild(0).GetComponent<Renderer>().material = room.settings.helpingMaterial;
+        else transform.GetChild(0).GetComponent<Renderer>().material = room.settings.floorMaterial;
+    }
+
     //public MazeDirection GetPassageDirection(MazeCell target)
     //{
     //    foreach (MazeCellEdge edge in edges)

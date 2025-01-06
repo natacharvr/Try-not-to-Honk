@@ -10,6 +10,7 @@ public class MonsterManager : MonoBehaviour
     private List<Spider> spiders;
     public int SpiderNb;
     public int SnakeNb;
+    private float speed;
 
     public Snake snakePrefab;
     private List<Snake> snakes;
@@ -45,6 +46,7 @@ public class MonsterManager : MonoBehaviour
             s.SetManager(this);
             s.SetMaze(maze);
             s.SetLocation(maze.GetCell(maze.RandomCoordinates));
+            s.SetSpeed(speed);
         }
 
         // Snakes
@@ -55,6 +57,7 @@ public class MonsterManager : MonoBehaviour
             s.SetManager(this);
             s.SetMaze(maze);
             s.SetLocation(maze.GetCell(maze.RandomCoordinates));
+            s.SetSpeed(speed);
         }
     }
 
@@ -87,5 +90,19 @@ public class MonsterManager : MonoBehaviour
     public List<MazeCell> Path(MazeCell currentCell, MazeCell targetCell)
     {
         return dijkstra.Path(currentCell, targetCell);
+    }
+
+    public void SetSpeed(float speed)
+    {
+        this.speed = speed;
+        foreach (Spider s in spiders)
+        {
+            s.SetSpeed(speed);
+        }
+
+        foreach (Snake s in snakes)
+        {
+            s.SetSpeed(speed);
+        }
     }
 }

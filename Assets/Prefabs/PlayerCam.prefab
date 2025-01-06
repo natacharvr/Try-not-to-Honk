@@ -105,4 +105,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b01e68a797410cf4d96941c742b568b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  particlesPrefabs: {fileID: 5232001003179463359, guid: d8a00382cb8fd3e4b9d0ccb22df139c9, type: 3}
   sensitivity: 10

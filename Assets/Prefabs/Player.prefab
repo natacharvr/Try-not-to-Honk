@@ -210,3 +210,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
+  gameUI: {fileID: 0}
+  damageSounds:
+  - {fileID: 8300000, guid: f76621ac46e6222438f15fed6b28df90, type: 3}
+  - {fileID: 8300000, guid: 0914db50488007d41895e881458aa85a, type: 3}
+  - {fileID: 8300000, guid: f7b978519b753324198bc5f6dbed1de8, type: 3}
+  - {fileID: 8300000, guid: 0d5e36b64c0328e42aaf88c0aee07335, type: 3}
+  - {fileID: 8300000, guid: 5911ecdb8f80da247bdd950bd9406842, type: 3}
+  - {fileID: 8300000, guid: a68c060bede02724b8fddfd917a3b579, type: 3}
+  - {fileID: 8300000, guid: 2cfe2172fd4348a4bbf6a771308c1a80, type: 3}
+  - {fileID: 8300000, guid: f452aca8b0bbaad479a049526e5f7789, type: 3}
+  - {fileID: 8300000, guid: 81984ae4a7e78744ea39269b8ce9d302, type: 3}
+  - {fileID: 8300000, guid: 4ea18c1fd1957b54da13560e3693575d, type: 3}
+  - {fileID: 8300000, guid: e8e31773bfaa3a44c98918705cd3ce1f, type: 3}
+  - {fileID: 8300000, guid: 9c23ab8796c5f8044870340b0b242bd7, type: 3}
+  - {fileID: 8300000, guid: 7c49d0b60b747394baa3abfb9b89e10a, type: 3}
+  - {fileID: 8300000, guid: 0b06a64790c0eb84998b101fd0fdc03c, type: 3}
+  - {fileID: 8300000, guid: 25f9b2e347cef3b4382f64bb9993af3b, type: 3}
+  - {fileID: 8300000, guid: d82884be56aa6c842a23d3ecfc0923e1, type: 3}
+  - {fileID: 8300000, guid: 80fd9792fc10e414e9ebb98e82bebab1, type: 3}
+  - {fileID: 8300000, guid: aa4618ad1feea564d972b2cde34b4aee, type: 3}
+  - {fileID: 8300000, guid: e25dd3d8493994743859475b91ec97ad, type: 3}
+  - {fileID: 8300000, guid: ab1722c552572914a96e8cac7005c664, type: 3}
+  - {fileID: 8300000, guid: 3c28de6270ec1554584725ee05f43c40, type: 3}
+  - {fileID: 8300000, guid: 2e5b12071b3169e4f9a63cf260dead1b, type: 3}
+  deathSound: {fileID: 8300000, guid: 05fe9f1b452d34546a6c1f0bb8b05f6a, type: 3}

@@ -53,15 +53,26 @@ MonoBehaviour:
   doorPrefab: {fileID: 1008142852891369009, guid: b98566701d4039948abbd1b6fa4497d7, type: 3}
   doorProbability: 0.1
   roomSettings:
-  - floorMaterial: {fileID: 2100000, guid: b91de4563fcda264b90f2b0178d5b407, type: 2}
-    wallMaterial: {fileID: 2100000, guid: 822cc66862aa5044fbaf5a81840d9dd1, type: 2}
-  - floorMaterial: {fileID: 2100000, guid: 0428ac4a8d04a4743a2a68e265741d5f, type: 2}
-    wallMaterial: {fileID: 2100000, guid: 620c4105e42651540a7930a51aef77be, type: 2}
-  - floorMaterial: {fileID: 2100000, guid: 5d21da34f795916469d3262bfa727a37, type: 2}
-    wallMaterial: {fileID: 2100000, guid: 57ea609f6b5077947b0c563def0d964e, type: 2}
-  - floorMaterial: {fileID: 2100000, guid: 6740bc96afe07784e9c0e8ea2ef6a4dd, type: 2}
-    wallMaterial: {fileID: 2100000, guid: d4e2fd04ed402b5439025d77b68b7ac5, type: 2}
+  - floorMaterial: {fileID: 2100000, guid: 6a220835709ebec48b9a270d31939bcb, type: 2}
+    wallMaterial: {fileID: 2100000, guid: 6a220835709ebec48b9a270d31939bcb, type: 2}
+    helpingMaterial: {fileID: 2100000, guid: 0736267407eec0544ae85c98c21f7ac2, type: 2}
+  - floorMaterial: {fileID: 2100000, guid: 2c530befbbd1e264b917918e83e952b7, type: 2}
+    wallMaterial: {fileID: 2100000, guid: 2c530befbbd1e264b917918e83e952b7, type: 2}
+    helpingMaterial: {fileID: 2100000, guid: fb712a1966dd5f4479b783d8446b8bf4, type: 2}
+  - floorMaterial: {fileID: 2100000, guid: 04447650db3605c41aa74cbfbfec51aa, type: 2}
+    wallMaterial: {fileID: 2100000, guid: 04447650db3605c41aa74cbfbfec51aa, type: 2}
+    helpingMaterial: {fileID: 2100000, guid: eaca3203059ae0e4f89fcbbcf62f6cb9, type: 2}
+  - floorMaterial: {fileID: 2100000, guid: b998ce64c54eaba41af5a6ba1f4c5a5f, type: 2}
+    wallMaterial: {fileID: 2100000, guid: b998ce64c54eaba41af5a6ba1f4c5a5f, type: 2}
+    helpingMaterial: {fileID: 2100000, guid: 7df7f0bf47d7c804e85764af42b8b7d2, type: 2}
+  - floorMaterial: {fileID: 2100000, guid: af7e0ad07bc5b87449dd798a47c9f3ee, type: 2}
+    wallMaterial: {fileID: 2100000, guid: af7e0ad07bc5b87449dd798a47c9f3ee, type: 2}
+    helpingMaterial: {fileID: 2100000, guid: 6c29276605bafa64383e1174b9edd7bd, type: 2}
+  - floorMaterial: {fileID: 2100000, guid: a64d5b60094acec4094e28d0dcea457e, type: 2}
+    wallMaterial: {fileID: 2100000, guid: a64d5b60094acec4094e28d0dcea457e, type: 2}
+    helpingMaterial: {fileID: 2100000, guid: 26a142c519d639a4c8b814090baf60d3, type: 2}
   extremities:
     floorMaterial: {fileID: 2100000, guid: 0e352f73d58d3184caa02c085f7a16d2, type: 2}
     wallMaterial: {fileID: 2100000, guid: 0e352f73d58d3184caa02c085f7a16d2, type: 2}
+    helpingMaterial: {fileID: 0}
   generationStepDelay: 0

@@ -11,7 +11,7 @@ public abstract class Monster : MonoBehaviour
     public float generationStepDelay;
     private Rigidbody rb;
     private Maze mazeInstance;
-    public float speed = 10f;
+    private float speed;
     private float threshold = 0.1f;
     private MazeRoom room;
 
@@ -31,6 +31,11 @@ public abstract class Monster : MonoBehaviour
         transform.position = cell.transform.localPosition;
         currentCell = cell;
         cell.room.Add(this);
+    }
+
+    public void SetSpeed(float speed)
+    {
+        this.speed = speed;
     }
 
 
@@ -72,11 +77,11 @@ public abstract class Monster : MonoBehaviour
     public void SetMaze(Maze maze)
     {
         mazeInstance = maze;
-    }
+    }   
 
     void Update()
     {
-        if ((path.Count > 1) && (Distance(transform.position, path[1].transform.position) < threshold))
+        if ((path != null) && (path.Count > 1) && (Distance(transform.position, path[1].transform.position) < threshold))
         {
             IntVector2 size = mazeInstance.size;
             int xPos = Mathf.FloorToInt(transform.position.x + size.x * 0.5f);

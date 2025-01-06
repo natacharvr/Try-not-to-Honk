@@ -5,15 +5,18 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using TMPro;
 
-public class Player: MonoBehaviour
+public class Player : MonoBehaviour
 {
     private Rigidbody rb;
     private float movementX;
     private float movementY;
-    public float speed = 0;
+    private float speed;
     private MazeCell currentCell;
     private Maze mazeInstance;
     public GameUI gameUI;
+
+    [SerializeField] private AudioClip[] damageSounds;
+    [SerializeField] private AudioClip deathSound;
 
     //private new AudioSource audio;
     //private AudioSource audioWin;
@@ -104,6 +107,11 @@ public class Player: MonoBehaviour
         }
     }
 
+    public void SetSpeed(float speed)
+    {
+        this.speed = speed;
+    }
+
     public void SetMaze(Maze maze)
     {
         mazeInstance = maze;
@@ -121,6 +129,7 @@ public class Player: MonoBehaviour
     public void Hit(int damage)
     {
         gameUI.Hit(damage);
+        SoundFXManager.instance.PlayRandomSoundFXClip(damageSounds, transform, 0.5f);
     }
 
     void OnCollisionEnter(Collision collision)
