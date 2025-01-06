@@ -88,20 +88,30 @@ public class MazeCell : MonoBehaviour
 
     public void SetHelping(bool truth_value, MazeDirection direction)
     {
+        // TODO change direction
         if (truth_value)
-        transform.GetChild(0).GetComponent<Renderer>().material = room.settings.helpingMaterial;
+            transform.GetChild(0).GetComponent<Renderer>().material = room.settings.helpingMaterial;
         else transform.GetChild(0).GetComponent<Renderer>().material = room.settings.floorMaterial;
     }
 
-    //public MazeDirection GetPassageDirection(MazeCell target)
-    //{
-    //    foreach (MazeCellEdge edge in edges)
-    //    {
-    //        if (edge.otherCell != null && edge.otherCell.coordinates == target.coordinates)
-    //        {
-    //            return edge.direction;
-    //        }
-    //    }
-    //    throw new System.InvalidOperationException("Target is not a passage of this cell.");
-    //}
+    public MazeDirection GetDirection(MazeCell target)
+    {
+        // WARNING THIS IS JUST IF TWO CELLS ARE ADJACENT
+        if (transform.position.x < target.transform.position.x)
+        {
+            return MazeDirection.East;
+        }
+        else if (transform.position.x > target.transform.position.x)
+        {
+            return MazeDirection.West;
+        }
+        else if (transform.position.z < target.transform.position.z)
+        {
+            return MazeDirection.North;
+        }
+        else
+        {
+            return MazeDirection.South;
+        }
+    }
 }

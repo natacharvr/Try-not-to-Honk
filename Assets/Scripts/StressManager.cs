@@ -50,9 +50,9 @@ public class StressManager: MonoBehaviour
         if ((stress.StressVariation() < 0) && (Input.GetKeyDown(KeyCode.H)))
         {
             // accelerate player
-            playerSpeed = playerSpeed - 0.1 * stress.StressVariation(); // With a minus because stress is negative
+            playerSpeed = playerSpeed - 0.1f * stress.StressVariation(); // With a minus because stress is negative
             // slow down monsters
-            monsterSpeed = monsterSpeed + 0.1 * stress.StressVariation(); // With a plus because stress is negative
+            monsterSpeed = monsterSpeed + 0.1f * stress.StressVariation(); // With a plus because stress is negative
 
             // show help for path
             int nb_help = Mathf.Abs(Mathf.FloorToInt(stress.StressVariation()));
@@ -60,22 +60,22 @@ public class StressManager: MonoBehaviour
             MazeCell destination = maze.GetDestination();
 
             List<MazeCell> path = dijkstra.Path(origin, destination);
-            for (int i = 0; i < Mathf.Min(path.Count, nb_help); i++)
+            for (int i = 0; i < Mathf.Min(path.Count-1, nb_help); i++)
             {
                 // TODO: change direction
-                path[i].SetHelping(true, MazeDirection.North);
+                path[i].SetHelping(true, path[i].GetDirection(path[i+1]));
             }
         }
 
 
         // if heart variation is positive
         // stress player
-        if (stress.StressVariation() > 0) && (Input.GetKeyDown(KeyCode.G))
+        if ((stress.StressVariation() > 0) && (Input.GetKeyDown(KeyCode.G)))
         {
             // slow down player
-            playerSpeed = playerSpeed - 0.1 * stress.StressVariation();
+            playerSpeed = playerSpeed - 0.1f * stress.StressVariation();
             // accelerate monsters
-            monsterSpeed = monsterSpeed + 0.1 * stress.StressVariation();
+            monsterSpeed = monsterSpeed + 0.1f * stress.StressVariation();
 
         }
 
