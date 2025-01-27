@@ -63,7 +63,7 @@ public abstract class Monster : MonoBehaviour
             { 
                 path = tempPath; 
                 playerSpotted = true;
-                yield return new WaitForSeconds(3);
+                yield return new WaitForSeconds(1);
                 playerSpotted = false;
             }
         }
@@ -77,7 +77,6 @@ public abstract class Monster : MonoBehaviour
 
     void FixedUpdate()
     {
-
         if (!playerSpotted) {
             StartCoroutine(SpotPlayer());
         }

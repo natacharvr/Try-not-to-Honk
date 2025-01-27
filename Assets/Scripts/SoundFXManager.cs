@@ -63,38 +63,33 @@ public class SoundFXManager : MonoBehaviour
 
     }
 
-    public IEnumerator PlayBackgroundMusic(AudioClip audioclip, float volume = 1f)
+    public AudioSource PlayBackgroundMusic(AudioClip audioclip, float volume = 1f)
     {
-        while (keepPlaying)
-        {
-            Debug.Log("Playing music");
-            // spawn in gameObject
-            AudioSource audioSource = Instantiate(soundFXObject, Vector3.zero, Quaternion.identity);
+        Debug.Log("Playing music");
+        // spawn in gameObject
+        AudioSource audioSource = Instantiate(soundFXObject, Vector3.zero, Quaternion.identity);
 
-            //assign the audioClip
-            audioSource.clip = audioclip;
+        //assign the audioClip
+        audioSource.clip = audioclip;
 
-            // assign the volume
-            audioSource.volume = volume;
+        // assign the volume
+        audioSource.volume = volume;
 
-            // play the audioClip
-            audioSource.Play();
+        // play the audioClip
+        audioSource.Play();
 
-            // get length of audioClip
-            float audioClipLength = audioclip.length;
-
-            // destroy the gameObject after the length of the audioClip
-            Destroy(audioSource.gameObject, audioClipLength);
-
-            // wait for the length of the audioClip
-            yield return new WaitForSeconds(audioClipLength);
-        }
+        // get length of audioClip
+        float audioClipLength = audioclip.length;
+        // TODO add a loop to keep playing the music
+        // destroy the gameObject after the length of the audioClip
+        Destroy(audioSource.gameObject, audioClipLength);
     }
 
     public void StopMusic()
     {
         keepPlaying = false;
         // stop musics playing
+        // TODO interrupt playing music
     }
 
 }
