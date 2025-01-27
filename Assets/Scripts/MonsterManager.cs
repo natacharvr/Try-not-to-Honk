@@ -17,6 +17,7 @@ public class MonsterManager : MonoBehaviour
 
     private Dijkstra dijkstra;
 
+
     public void SetMaze(Maze maze)
     {
         this.maze = maze;
@@ -85,6 +86,15 @@ public class MonsterManager : MonoBehaviour
     public MazeCell RandomRoomDestination(MazeRoom room)
     {
         return room.RandomCell();
+    }
+
+    public List<MazeCell> PathToPlayer(MazeCell currentCell)
+    {
+        if (currentCell.room == player.GetCurrentCell().room)
+        {
+            return Path(currentCell, player.GetCurrentCell());
+        }
+        return null;
     }
 
     public List<MazeCell> Path(MazeCell currentCell, MazeCell targetCell)

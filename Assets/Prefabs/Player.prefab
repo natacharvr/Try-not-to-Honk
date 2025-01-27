@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3872399105843238543}
   - component: {fileID: 3078641332206945614}
   - component: {fileID: 3229102718994288427}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PlayerObj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,9 +96,9 @@ GameObject:
   - component: {fileID: 5458878650398837387}
   - component: {fileID: 5492175934854328053}
   - component: {fileID: 4421941798245341521}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -209,7 +209,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f404527f99d68043802e322f8eacc8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
   gameUI: {fileID: 0}
   damageSounds:
   - {fileID: 8300000, guid: f76621ac46e6222438f15fed6b28df90, type: 3}

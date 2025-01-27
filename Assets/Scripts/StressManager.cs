@@ -23,6 +23,12 @@ public class StressManager: MonoBehaviour
     [SerializeField] private float monsterMinSpeed = 14;
     [SerializeField] private float monsterMaxSpeed = 25;
 
+    // user scores 
+    private string userName;
+    private int heartSpiderMax = 0;
+    private int heartSerpentMax = 0;
+    private int heartStressMax = 0;
+
 
     private void Start()
     {
@@ -86,5 +92,19 @@ public class StressManager: MonoBehaviour
         return dijkstra.Path(from, to);
     }
 
+    public void SaveStressUser()
+    {
+        PlayerPrefs.SetInt(userName+"SpiderStress", heartSpiderMax);
+        PlayerPrefs.SetInt(userName+"SerpentStress", heartSpiderMax);
+        PlayerPrefs.SetInt(userName+"Stress", heartStressMax);
+    }
+
+    public void LoadStressUser(string user)
+    {
+        userName = user;
+        heartSpiderMax = PlayerPrefs.GetInt(user + "SpiderStress", 0);
+        heartSerpentMax = PlayerPrefs.GetInt(user + "SerpentStress", 0);
+        heartStressMax = PlayerPrefs.GetInt(user + "Stress", 0);
+    }
 
 }

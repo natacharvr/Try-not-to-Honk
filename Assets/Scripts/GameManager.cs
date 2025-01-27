@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
     private Maze mazeInstance;
 
     //player
+    public string userName;
+
     public Player playerPrefab;
     public MouseLookAround playerCamera;
     private Player playerInstance;
@@ -89,6 +91,7 @@ public class GameManager : MonoBehaviour
 
         //Debug.Log("Player Instance " + playerInstance);
         // stress manager
+        stressManager.LoadStressUser(userName);
         stressManager.SetPlayer(playerInstance);
         stressManager.SetMaze(mazeInstance);
 
@@ -116,6 +119,7 @@ public class GameManager : MonoBehaviour
         playerInstance.gameObject.SetActive(false);
         playerCameraInstance.gameObject.SetActive(false);
         gameUI.gameObject.SetActive(false);
+        stressManager.SaveStressUser();
     }
 
     public void Loose()
@@ -124,6 +128,7 @@ public class GameManager : MonoBehaviour
         playerInstance.gameObject.SetActive(false);
         playerCameraInstance.gameObject.SetActive(false);
         gameUI.gameObject.SetActive(false);
+        stressManager.SaveStressUser();
     }
 
     public void RestartGame()

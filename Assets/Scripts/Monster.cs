@@ -14,10 +14,13 @@ public abstract class Monster : MonoBehaviour
     private float speed;
     private float threshold = 0.1f;
     private MazeRoom room;
+    private bool playerSpotted;
+
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        playerSpotted = false;
         //Debug.Log("rigidbody" + rb);
     }
 
@@ -45,13 +48,58 @@ public abstract class Monster : MonoBehaviour
         targetCell = manager.RandomRoomDestination(currentCell.room);
     }
 
+    private IEnumerator SpotPlayer()
+    {
+        // Player detection (if player in field of view)
+        RaycastHit hit;
+        LayerMask layerMask = LayerMask.GetMask("Labyrinth", "Player");
+        // Does the ray intersect any objects excluding the player layer
+        if ((Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask)) && hit.collider.tag == "Player")
+        {
+            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
+            Debug.Log("Player spotted");
+            List<MazeCell> tempPath = manager.PathToPlayer(currentCell);
+            if (tempPath != null)
+            { 
+                path = tempPath; 
+                playerSpotted = true;
+                yield return new WaitForSeconds(3);
+                playerSpotted = false;
+            }
+        }
+        else
+        {
+            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 1000, Color.white);
+            //Debug.Log("Did not Hit");
+        }
+
+    }
+
     void FixedUpdate()
     {
+
+        if (!playerSpotted) {
+            StartCoroutine(SpotPlayer());
+        }
+        
         while (path == null || path.Count <= 1)
         {
-            AskRandomDestination();
-            path = manager.Path(currentCell, targetCell);
+            if (playerSpotted)
+            {
+                path = manager.PathToPlayer(currentCell);
+                if (path == null)
+                {
+                    playerSpotted = false;
+                }
+            }
+            else
+            {
+                //Debug.Log("while monster update");
+                AskRandomDestination();
+                path = manager.Path(currentCell, targetCell);
+            }
         }
+        
         Vector3 direction = path[1].transform.position - transform.position;
         direction.Normalize();
         if (direction.magnitude > 0.1f) // Avoid rotating for very small movements

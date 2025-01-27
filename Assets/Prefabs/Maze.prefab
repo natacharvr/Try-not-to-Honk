@@ -74,5 +74,5 @@ MonoBehaviour:
   extremities:
     floorMaterial: {fileID: 2100000, guid: 0e352f73d58d3184caa02c085f7a16d2, type: 2}
     wallMaterial: {fileID: 2100000, guid: 0e352f73d58d3184caa02c085f7a16d2, type: 2}
-    helpingMaterial: {fileID: 0}
+    helpingMaterial: {fileID: 2100000, guid: 0e352f73d58d3184caa02c085f7a16d2, type: 2}
   generationStepDelay: 0

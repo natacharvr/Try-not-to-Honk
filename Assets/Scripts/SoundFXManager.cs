@@ -67,6 +67,7 @@ public class SoundFXManager : MonoBehaviour
     {
         while (keepPlaying)
         {
+            Debug.Log("Playing music");
             // spawn in gameObject
             AudioSource audioSource = Instantiate(soundFXObject, Vector3.zero, Quaternion.identity);
 

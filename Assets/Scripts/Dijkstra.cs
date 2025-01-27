@@ -92,6 +92,7 @@ public class Dijkstra
         Node current = nodes.Find(n => n.GetCell().coordinates == destination.coordinates);
         while (current != null)
         {
+            //Debug.Log("while getPath");
             path.Add(current.GetCell());
             current = current.GetPrevious();
         }
