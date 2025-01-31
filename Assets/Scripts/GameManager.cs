@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     private Maze mazeInstance;
 
     //player
-    public string userName;
+    private string userName;
 
     public Player playerPrefab;
     public MouseLookAround playerCamera;
@@ -26,19 +26,16 @@ public class GameManager : MonoBehaviour
     public StressManager stressManager;
 
     // UI
-    public GameObject menuPanel;
+    public MenuPanel menuPanel;
     public GameObject endPanelWin;
     public GameObject endPanelLoose;
+    public ScoreBoard scoreBoard;
     public GameUI gameUI;
     public float complexity;
     private float MaxTime;
 
     // bitalino
     [SerializeField] private BitalinoScript bitalino;
-    [SerializeField] private Button startButton; 
-
-    // Audio
-    //[SerializeField] private AudioClip rainSound;
 
 
     // Start is called before the first frame update
@@ -47,25 +44,24 @@ public class GameManager : MonoBehaviour
         endPanelWin.SetActive(false);
         endPanelLoose.SetActive(false);
         gameUI.gameObject.SetActive(false);
-        menuPanel.SetActive(true);
-        startButton.interactable = false;
+        menuPanel.gameObject.SetActive(true);
+        scoreBoard.gameObject.SetActive(false);
         StartCoroutine(bitalinoConnected());
     }
 
     private IEnumerator bitalinoConnected()
     {
-        bool start = false;
-        while (!start)
+        while (!bitalino.isAcquisitionStarted) // Use the condition directly
         {
-            start = bitalino.isAcquisitionStarted;
             yield return new WaitForSeconds(1);
         }
-        startButton.interactable = true;
+
+        menuPanel.bitalinoConnected();
     }
 
-        // Update is called once per frame
-        void Update()
-    {
+    // Update is called once per frame
+    void Update()
+        {
         if (Input.GetKeyDown(KeyCode.Space))
         {
             RestartGame();
@@ -88,12 +84,15 @@ public class GameManager : MonoBehaviour
     private IEnumerator BeginGame()
     {
         Debug.Log("Game Started");
+        userName = menuPanel.GetUsername();
+        Debug.Log("Welcome " + userName);
 
         //UI
         endPanelWin.SetActive(false);
         endPanelLoose.SetActive(false);
-        menuPanel.SetActive(false);
+        menuPanel.gameObject.SetActive(false);
         gameUI.gameObject.SetActive(false);
+        scoreBoard.gameObject.SetActive(false);
         //timerText.gameObject.SetActive(false);
 
         Camera.main.clearFlags = CameraClearFlags.Skybox;
@@ -114,9 +113,11 @@ public class GameManager : MonoBehaviour
 
         //Debug.Log("Player Instance " + playerInstance);
         // stress manager
-        stressManager.LoadStressUser(userName);
         stressManager.SetPlayer(playerInstance);
         stressManager.SetMaze(mazeInstance);
+        stressManager.BeginGame();
+
+        scoreBoard.BeginGame(userName);
 
         // monsters
         monsterManager.SetMaze(mazeInstance);
@@ -143,8 +144,9 @@ public class GameManager : MonoBehaviour
         playerInstance.gameObject.SetActive(false);
         playerCameraInstance.gameObject.SetActive(false);
         gameUI.gameObject.SetActive(false);
-        stressManager.SaveStressUser();
+        scoreBoard.SaveStressUser();
         SoundFXManager.instance.StopAllSoundFX();
+        scoreBoard.gameObject.SetActive(true);
     }
 
     public void Loose()
@@ -153,8 +155,9 @@ public class GameManager : MonoBehaviour
         playerInstance.gameObject.SetActive(false);
         playerCameraInstance.gameObject.SetActive(false);
         gameUI.gameObject.SetActive(false);
-        stressManager.SaveStressUser();
+        scoreBoard.SaveStressUser();
         SoundFXManager.instance.StopAllSoundFX();
+        scoreBoard.gameObject.SetActive(true);
     }
 
     public void StartGame()

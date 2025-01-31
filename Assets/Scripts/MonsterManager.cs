@@ -68,6 +68,25 @@ public class MonsterManager : MonoBehaviour
         }
     }
 
+    public void SpawnMonster()
+    {
+        Monster s;
+        if (Random.value < 0.5)
+        {
+            s = Instantiate(spiderPrefab) as Monster;
+        }
+        else
+        {
+            s = Instantiate(snakePrefab) as Monster;
+        }
+        s.SetManager(this);
+        s.SetMaze(maze);
+        s.SetLocation(maze.GetCell(maze.RandomCoordinates));
+        s.SetSpeed(speed);
+        s.SetPerception(perception);
+        s.SetChaseTime(chaseTime);
+    }
+
     public void EndGame()
     {
         foreach (Spider s in spiders)

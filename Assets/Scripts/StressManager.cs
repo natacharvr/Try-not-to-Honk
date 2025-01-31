@@ -9,7 +9,6 @@ public class StressManager: MonoBehaviour
     private Dijkstra dijkstra;
     [SerializeField] private Stress stress;
     private float heartRate;
-    public Material floorHelp;
     public MonsterManager monsterManager;
 
 
@@ -23,16 +22,14 @@ public class StressManager: MonoBehaviour
     [SerializeField] private float monsterMinSpeed = 14;
     [SerializeField] private float monsterMaxSpeed = 25;
 
-    // user scores 
-    private string userName;
-    private int heartSpiderMax = 0;
-    private int heartSerpentMax = 0;
-    private int heartStressMax = 0;
-
 
     private void Start()
     {
         monsterManager.SetSpeed(monsterSpeed);
+    }
+
+    public void BeginGame()
+    {
         StartCoroutine(StressInfluence());
     }
 
@@ -51,10 +48,12 @@ public class StressManager: MonoBehaviour
     private IEnumerator StressInfluence()
     {
         // if heart variation is negative
+        Debug.Log("StressInfluence");   
         // help player
         // TODO adjust
         if (stress.StressVariationAbsolute() < 0)
         {
+            Debug.Log("StressInfluence: help player");  
             // accelerate player
             playerSpeed = Mathf.Min(15, playerSpeed - 0.1f * stress.StressVariationAbsolute()); // With a minus because stress is negative
             player.SetSpeed(playerSpeed);
@@ -80,6 +79,7 @@ public class StressManager: MonoBehaviour
         // stress player
         if (stress.StressVariationAbsolute() > 0)
         {
+            Debug.Log("StressInfluence: stress player");
             // slow down player
             playerSpeed = Mathf.Max(playerSpeed - 0.1f * stress.StressVariationAbsolute(), 1);
             player.SetSpeed(playerSpeed);
@@ -87,28 +87,19 @@ public class StressManager: MonoBehaviour
             monsterSpeed = Mathf.Min(15, monsterSpeed + 0.1f * stress.StressVariationAbsolute());
             monsterManager.SetSpeed(monsterSpeed);
 
+            // spawn monsters
+            if (Random.value < spawnProbability)
+            {
+                monsterManager.SpawnMonster();
+                Debug.Log("Monster spawned");
+            }
         }
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(5);
     }
 
     public List<MazeCell> GetPath(MazeCell from, MazeCell to)
     {
         return dijkstra.Path(from, to);
-    }
-
-    public void SaveStressUser()
-    {
-        PlayerPrefs.SetInt(userName+"SpiderStress", heartSpiderMax);
-        PlayerPrefs.SetInt(userName+"SerpentStress", heartSpiderMax);
-        PlayerPrefs.SetInt(userName+"Stress", heartStressMax);
-    }
-
-    public void LoadStressUser(string user)
-    {
-        userName = user;
-        heartSpiderMax = PlayerPrefs.GetInt(user + "SpiderStress", 0);
-        heartSerpentMax = PlayerPrefs.GetInt(user + "SerpentStress", 0);
-        heartStressMax = PlayerPrefs.GetInt(user + "Stress", 0);
     }
 
 }

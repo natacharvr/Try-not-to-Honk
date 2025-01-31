@@ -1,19 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Stress : MonoBehaviour
 {
     private float heartRate;
-    private float previousHeartRate;
+    private Queue<float> previousHeartRates; // 20 previous heart rates to calculate the average
     public EcgUI ecgUI;
-    public float calmHeartRate = 80;
-    private float spiderPeak = 0;
-    private float snakePeak = 0;
+    private float calmHeartRate = 80;
+    
     [SerializeField] private GameUI gameUI;
+    [SerializeField] private ScoreBoard scoreBoard;
 
     private void Start()
     {
+        previousHeartRates = new Queue<float>();
+        heartRate = 80;
         StartCoroutine(UpdateHeartRate());
     }
 
@@ -24,7 +27,6 @@ public class Stress : MonoBehaviour
 
     public void SetCalmHeartRate(float calmHeartRate)
     {
-        // TODO: calibrate sensor
         this.calmHeartRate = calmHeartRate;
     }
 
@@ -32,8 +34,14 @@ public class Stress : MonoBehaviour
     {   
         while (true)
         {
-            previousHeartRate = heartRate;
+            previousHeartRates.Enqueue(heartRate);
+            if (previousHeartRates.Count > 20)
+            {
+                previousHeartRates.Dequeue();
+            }
             heartRate = ecgUI.GetHeartRate();
+            scoreBoard.GiveHeartRate(heartRate);
+            //Debug.Log(heartRate);
             gameUI.SetBpmText(heartRate);
             yield return new WaitForSeconds(1);
         }
@@ -44,9 +52,9 @@ public class Stress : MonoBehaviour
         return heartRate - calmHeartRate;
     }
 
-    public float StressVariationInstant()
+    public float StressVariationTendancy()
     {
-        return heartRate - previousHeartRate;
+        return heartRate - previousHeartRates.Average();
     }
 
 }

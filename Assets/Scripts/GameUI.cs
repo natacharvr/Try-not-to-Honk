@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Linq;
 
 public class GameUI : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class GameUI : MonoBehaviour
     private float life;
     public Image greenLife;
     private float maxLife = 100;
+    private List<float> bpmList;
 
     public void Initialize(float maxTime)
     {

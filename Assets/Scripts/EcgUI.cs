@@ -177,7 +177,7 @@ public class EcgUI : MonoBehaviour
             // Ensure at least 300ms (200 BPM max) between beats to avoid false positives
             if (currentTime - lastPeakTime > 0.3f)
             {
-                Debug.Log("Peak detected at: " + currentTime);
+                //Debug.Log("Peak detected at: " + currentTime);
                 peakTimestamps.Add(currentTime);
                 lastPeakTime = currentTime;
                 CalculateHeartRate();
@@ -209,7 +209,7 @@ public class EcgUI : MonoBehaviour
             peakTimestamps.RemoveAt(0);
         }
 
-        Debug.Log("Heart Rate: " + heartRate + " BPM");
+        //Debug.Log("Heart Rate: " + heartRate + " BPM");
     }
 
 
