@@ -20,6 +20,7 @@ public class ScoreBoard : MonoBehaviour
     [SerializeField] private TMP_Text maxStressText;
     [SerializeField] private TMP_Text minStressText;
     [SerializeField] private TMP_Text avgStressText;
+    [SerializeField] private TMP_Text titleText;
 
     public void BeginGame(string username)
     {
@@ -78,6 +79,7 @@ public class ScoreBoard : MonoBehaviour
         maxStressText.text = $"Max bpm : {previousMaxStress} -> {maxStress}";
         minStressText.text = $"Min bpm : {previousMinStress} -> {minStress}";
         avgStressText.text = $"Avg bpm : {previousAvStress} -> {GetAverageStress()}";
+        titleText.text = $"Scoreboard for {userName}";
     }
 
 

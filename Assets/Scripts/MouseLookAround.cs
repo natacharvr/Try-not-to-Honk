@@ -15,8 +15,8 @@ public class MouseLookAround : MonoBehaviour
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
 
         rain = Instantiate(particlesPrefabs);
         rain.transform.position = new Vector3(transform.position.x, 3, transform.position.z);

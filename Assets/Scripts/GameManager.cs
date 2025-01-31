@@ -47,6 +47,8 @@ public class GameManager : MonoBehaviour
         menuPanel.gameObject.SetActive(true);
         scoreBoard.gameObject.SetActive(false);
         StartCoroutine(bitalinoConnected());
+        Cursor.lockState = CursorLockMode.Confined;
+
     }
 
     private IEnumerator bitalinoConnected()
@@ -89,11 +91,13 @@ public class GameManager : MonoBehaviour
             }
             yield return new WaitForSeconds(1);
         }
+        Cursor.visible = true;
     }
 
     private IEnumerator BeginGame()
     {
         //Debug.Log("Game Started");
+        Cursor.visible = false;
         userName = menuPanel.GetUsername();
         //Debug.Log("Welcome " + userName);
 

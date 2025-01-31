@@ -5678,6 +5678,7 @@ MonoBehaviour:
   maxStressText: {fileID: 1585543790}
   minStressText: {fileID: 43451497}
   avgStressText: {fileID: 1812641490}
+  titleText: {fileID: 1449968827}
 --- !u!1 &1870883737
 GameObject:
   m_ObjectHideFlags: 0
@@ -6599,6 +6600,7 @@ MonoBehaviour:
   samplingRate: 1000
   resolution: 10
   isAcquisitionStarted: 0
+  connect: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
