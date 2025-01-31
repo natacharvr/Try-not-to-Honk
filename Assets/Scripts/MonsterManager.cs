@@ -11,6 +11,7 @@ public class MonsterManager : MonoBehaviour
     public int SpiderNb;
     public int SnakeNb;
     private float speed;
+    private float defaultSpeed = 17;
 
     public Snake snakePrefab;
     private List<Snake> snakes;
@@ -40,6 +41,7 @@ public class MonsterManager : MonoBehaviour
     public void BeginGame()
     {
         // Monsters setup
+        speed = defaultSpeed;
 
         //Spiders
         for (int i = 0; i < SpiderNb; i++)
@@ -73,11 +75,13 @@ public class MonsterManager : MonoBehaviour
         Monster s;
         if (Random.value < 0.5)
         {
-            s = Instantiate(spiderPrefab) as Monster;
+            s = Instantiate(snakePrefab) as Monster;
+            snakes.Add(s as Snake);
         }
         else
         {
-            s = Instantiate(snakePrefab) as Monster;
+            s = Instantiate(spiderPrefab) as Monster;
+            spiders.Add(s as Spider);
         }
         s.SetManager(this);
         s.SetMaze(maze);

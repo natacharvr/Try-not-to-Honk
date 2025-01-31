@@ -50,6 +50,10 @@ public class ScoreBoard : MonoBehaviour
     public void GiveHeartRate(float heartRate)
     {
         int heartRateInt = Mathf.FloorToInt(heartRate); 
+        if (heartRateInt == 0)
+        {
+            return;
+        }
 
         if (heartRateInt > maxStress)
         {

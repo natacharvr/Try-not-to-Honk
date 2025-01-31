@@ -6,7 +6,7 @@ public class SoundFXManager : MonoBehaviour
 {
     public static SoundFXManager instance;
     [SerializeField] private AudioClip[] backgroundMusicClip;  // For managing multiple background music tracks
-    private List<AudioSource> backgroundMusicSources;
+    private AudioSource[] backgroundMusicSources;
     private List<AudioSource> playingSounds;  // To track all currently playing sound effects
     [SerializeField] private AudioSource soundFXObject;
 
@@ -23,7 +23,7 @@ public class SoundFXManager : MonoBehaviour
         }
 
         playingSounds = new List<AudioSource>();
-        backgroundMusicSources = new List<AudioSource>(); 
+        backgroundMusicSources = new AudioSource[3];  // Three tracks for background music
     }
 
     // Play a background music clip on a specific track (0, 1, or 2)
@@ -36,10 +36,12 @@ public class SoundFXManager : MonoBehaviour
         }
         AudioSource audioSource;
         AudioClip clip = backgroundMusicClip[trackIndex];
-        if (trackIndex >= backgroundMusicSources.Count)
+        if (backgroundMusicSources[trackIndex] == null)
         {
             audioSource = Instantiate(soundFXObject, Vector3.zero, Quaternion.identity);
             audioSource.clip = clip;
+            backgroundMusicSources[trackIndex] = audioSource;
+            playingSounds.Add(audioSource);
         } else
         {
             audioSource = backgroundMusicSources[trackIndex];
@@ -63,16 +65,19 @@ public class SoundFXManager : MonoBehaviour
     // Stop a specific background track (0, 1, or 2)
     public void StopBackgroundMusic(int trackIndex)
     {
-        if (trackIndex < 0 || trackIndex >= backgroundMusicSources.Count)
+        if (trackIndex < 0 || trackIndex >= 3)
         {
             Debug.LogError("Invalid track index.");
             return;
         }
 
         AudioSource audioSource = backgroundMusicSources[trackIndex];
-        if (audioSource.isPlaying)
+        if (audioSource != null && audioSource.isPlaying)
         {
             audioSource.Stop();
+            playingSounds.Remove(audioSource);
+            Destroy(audioSource.gameObject); // Destroy it
+            backgroundMusicSources[trackIndex] = null;
         }
     }
 
@@ -81,19 +86,31 @@ public class SoundFXManager : MonoBehaviour
     {
         foreach (var audioSource in backgroundMusicSources)
         {
-            if (audioSource.isPlaying)
+            if (audioSource != null && audioSource.isPlaying)
             {
                 audioSource.Stop();
+                playingSounds.Remove(audioSource);
+                Destroy(audioSource.gameObject); // Destroy it
             }
         }
+        backgroundMusicSources = new AudioSource[3];  // Reset the array
+    }
+
+    public void StartFadeOutBackgroundMusic(int trackIndex, float fadeDuration)
+    {
+        StartCoroutine(FadeOutBackgroundMusic(trackIndex, fadeDuration));
     }
 
     // Fade out a specific background track (0, 1, or 2) over a set duration
-    public IEnumerator FadeOutBackgroundMusic(int trackIndex, float fadeDuration)
+    private IEnumerator FadeOutBackgroundMusic(int trackIndex, float fadeDuration)
     {
-        if (trackIndex < 0 || trackIndex >= backgroundMusicSources.Count)
+        if (trackIndex < 0 || trackIndex >= 3)
         {
             Debug.LogError("Invalid track index.");
+            yield break;
+        }
+        if (backgroundMusicSources[trackIndex] == null)
+        {
             yield break;
         }
 
@@ -108,23 +125,47 @@ public class SoundFXManager : MonoBehaviour
 
         audioSource.volume = 0f;
         audioSource.Stop();  // Stop music after fade-out
+        playingSounds.Remove(audioSource);
+        Destroy(audioSource.gameObject); // Destroy it
+        backgroundMusicSources[trackIndex] = null;
     }
 
-    // Fade in a specific background track (0, 1, or 2) over a set duration
-    public IEnumerator FadeInBackgroundMusic(int trackIndex, float fadeDuration, float targetVolume = 1f)
+ 
+    public void StartFadeInBackgroundMusic(int trackIndex, float fadeDuration, float targetVolume = 1f)
     {
-        if (trackIndex < 0 || trackIndex >= backgroundMusicSources.Count)
+        StartCoroutine(FadeInBackgroundMusic(trackIndex, fadeDuration, targetVolume));
+    }
+
+    private IEnumerator FadeInBackgroundMusic(int trackIndex, float fadeDuration, float targetVolume = 1f)
+    {
+        if (trackIndex < 0 || trackIndex >= backgroundMusicClip.Length)
         {
             Debug.LogError("Invalid track index.");
             yield break;
         }
 
-        AudioSource audioSource = backgroundMusicSources[trackIndex];
-        audioSource.volume = 0f;  // Start with volume 0
+        // Instantiate a new AudioSource if it doesn't already exist
+        AudioSource audioSource;
+        if (backgroundMusicSources[trackIndex] == null)
+        {
+            audioSource = Instantiate(soundFXObject, Vector3.zero, Quaternion.identity);
+            backgroundMusicSources[trackIndex] = audioSource; // Add to the list
+            playingSounds.Add(audioSource);
+        }
+        else
+        {
+            audioSource = backgroundMusicSources[trackIndex];
+        }
+
+        // Set the clip and other properties
+        audioSource.clip = backgroundMusicClip[trackIndex];
+        audioSource.volume = 0f;  // Start with volume at 0
         audioSource.loop = true;
 
+        // Play the audio
         audioSource.Play();
 
+        // Gradually increase the volume to the target volume over the fade duration
         float startVolume = audioSource.volume;
 
         for (float t = 0; t < fadeDuration; t += Time.deltaTime)
@@ -133,34 +174,28 @@ public class SoundFXManager : MonoBehaviour
             yield return null;
         }
 
-        audioSource.volume = targetVolume;  // Ensure the final volume is set
+        // Ensure the final volume is set correctly
+        audioSource.volume = targetVolume;
     }
+
 
     // Play a single sound effect clip
     public IEnumerator PlaySoundFXClip(AudioClip audioClip, Transform spawnTransform, float volume = 1f)
     {
-        // Spawn in gameObject
         AudioSource audioSource = Instantiate(soundFXObject, spawnTransform.position, Quaternion.identity);
 
-        // Assign the audioClip
         audioSource.clip = audioClip;
 
-        // Assign the volume
         audioSource.volume = volume;
 
-        // Play the audioClip
         audioSource.Play();
 
-        // Add to playing list
         playingSounds.Add(audioSource);
 
-        // Get length of audioClip
         float audioClipLength = audioClip.length;
 
-        // Destroy the gameObject after the length of the audioClip
         yield return new WaitForSeconds(audioClipLength);
 
-        // Remove from playing list and destroy
         playingSounds.Remove(audioSource);
         Destroy(audioSource.gameObject);
     }
@@ -169,23 +204,17 @@ public class SoundFXManager : MonoBehaviour
     {
         int randomIndex = Random.Range(0, audioClips.Length);
         AudioClip randomClip = audioClips[randomIndex];
-        // spawn in gameObject
         AudioSource audioSource = Instantiate(soundFXObject, spawnTransform.position, Quaternion.identity);
 
-        //assign the audioClip
         audioSource.clip = randomClip;
 
-        // assign the volume
         audioSource.volume = volume;
 
-        // play the audioClip
         audioSource.Play();
         playingSounds.Add(audioSource);
 
-        // get length of audioClip
         float audioClipLength = randomClip.length;
 
-        // destroy the gameObject after the length of the audioClip
         playingSounds.Remove(audioSource);
         Destroy(audioSource.gameObject, audioClipLength);
     }

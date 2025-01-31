@@ -83,4 +83,18 @@ public class MenuPanel : MonoBehaviour
         minBpm = 200;
         bitalinoConnected();
     }
+
+    public void NoDevice()
+    {
+        isBitalinoConnected = !isBitalinoConnected;
+        if (isBitalinoConnected)
+        {
+            connecting.text = "";
+        }
+        else
+        {
+            connecting.text = "Connecting ...";
+        }
+        ValueChangeCheck();
+    }
 }

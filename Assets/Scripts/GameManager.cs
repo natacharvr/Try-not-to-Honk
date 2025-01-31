@@ -66,18 +66,28 @@ public class GameManager : MonoBehaviour
         {
             RestartGame();
         }
+    }
 
-
-        if (playerInstance != null)
+    private IEnumerator WinLoose()
+    {
+        bool stop = false;
+        while (!stop)
         {
-            bool win = playerInstance.GetCurrentCell().coordinates == mazeInstance.GetDestination().coordinates;
-            if (win) {
-                Win();
-            }
-            else if (gameUI.Loose())
+            if (playerInstance != null)
             {
-                Loose();
+                bool win = playerInstance.GetCurrentCell().coordinates == mazeInstance.GetDestination().coordinates;
+                if (win)
+                {
+                    Win();
+                    stop = true;
+                }
+                else if (gameUI.Loose())
+                {
+                    Loose();
+                    stop = true;
+                }
             }
+            yield return new WaitForSeconds(1);
         }
     }
 
@@ -133,14 +143,17 @@ public class GameManager : MonoBehaviour
         gameUI.gameObject.SetActive(true);
 
         // Audio 
-        //SoundFXManager.instance.PlaySoundFXClip(rainSound, transform, 0.5f);
-        SoundFXManager.instance.PlayBackgroundMusic(2, 1.0f, true);
+        //SoundFXManager.instance.PlayBackgroundMusic(0, 1.0f, true);
+        SoundFXManager.instance.StartFadeInBackgroundMusic(0, 5, 1.0f);
+
+        StartCoroutine(WinLoose());
 
     }
 
     public void Win()
     {
         endPanelWin.SetActive(true);
+        stressManager.EndGame();
         playerInstance.gameObject.SetActive(false);
         playerCameraInstance.gameObject.SetActive(false);
         gameUI.gameObject.SetActive(false);
@@ -152,6 +165,7 @@ public class GameManager : MonoBehaviour
     public void Loose()
     {
         endPanelLoose.SetActive(true);
+        stressManager.EndGame();
         playerInstance.gameObject.SetActive(false);
         playerCameraInstance.gameObject.SetActive(false);
         gameUI.gameObject.SetActive(false);
@@ -184,5 +198,16 @@ public class GameManager : MonoBehaviour
     float CalculateTime()
     {
         return stressManager.GetPath(mazeInstance.GetOrigin(), mazeInstance.GetDestination()).Count;
+    }
+
+    public void QuitGame()
+    {
+        Debug.Log("Game is exiting...");
+        Application.Quit(); 
+    }
+
+    public void RestartScene()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
 }

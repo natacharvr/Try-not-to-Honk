@@ -8,7 +8,7 @@ public class Stress : MonoBehaviour
     private float heartRate;
     private Queue<float> previousHeartRates; // 20 previous heart rates to calculate the average
     public EcgUI ecgUI;
-    private float calmHeartRate = 80;
+    private float calmHeartRate = 0;
     
     [SerializeField] private GameUI gameUI;
     [SerializeField] private ScoreBoard scoreBoard;
