@@ -90,10 +90,13 @@ public class MenuPanel : MonoBehaviour
         if (isBitalinoConnected)
         {
             connecting.text = "";
+            BitalinoScript.instance.connect = false;
         }
         else
         {
             connecting.text = "Connecting ...";
+            BitalinoScript.instance.connect = true;
+
         }
         ValueChangeCheck();
     }

@@ -81,7 +81,7 @@ public abstract class Monster : MonoBehaviour
             if (Physics.Raycast(transform.position, direction, out hit, perception, layerMask) && hit.collider.CompareTag("Player"))
             {
                 Debug.DrawRay(transform.position, direction * hit.distance, Color.yellow);
-                Debug.Log("Player spotted!");
+                //Debug.Log("Player spotted!");
                 playerSeen = true;
                 break; // Stop checking after spotting the player
             }
@@ -128,7 +128,7 @@ public abstract class Monster : MonoBehaviour
 
         if (lostSight)
         {
-            Debug.Log("Lost sight of player");
+            //Debug.Log("Lost sight of player");
             playerSpotted = false;
         }
 

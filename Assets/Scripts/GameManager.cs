@@ -62,10 +62,10 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
         {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            RestartGame();
-        }
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    RestartGame();
+        //}
     }
 
     private IEnumerator WinLoose()
@@ -93,9 +93,9 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator BeginGame()
     {
-        Debug.Log("Game Started");
+        //Debug.Log("Game Started");
         userName = menuPanel.GetUsername();
-        Debug.Log("Welcome " + userName);
+        //Debug.Log("Welcome " + userName);
 
         //UI
         endPanelWin.SetActive(false);
@@ -180,7 +180,7 @@ public class GameManager : MonoBehaviour
     }
     public void RestartGame()
     {
-        Debug.Log("Game Restarted");
+        //Debug.Log("Game Restarted");
         StopAllCoroutines();
         Destroy(mazeInstance.gameObject);
         if (playerInstance != null)
@@ -202,7 +202,7 @@ public class GameManager : MonoBehaviour
 
     public void QuitGame()
     {
-        Debug.Log("Game is exiting...");
+        //Debug.Log("Game is exiting...");
         Application.Quit(); 
     }
 

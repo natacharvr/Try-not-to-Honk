@@ -57,12 +57,12 @@ public class StressManager : MonoBehaviour
         while (!gameEnded)
         {
             // if heart variation is negative
-            Debug.Log("StressInfluence");
+            //Debug.Log("StressInfluence");
             // help player
             // TODO adjust
             if (stress.StressVariationAbsolute() < 0 && stress.StressVariationTendancy() < 5)
             {
-                Debug.Log("StressInfluence: help player");
+                //Debug.Log("StressInfluence: help player");
                 if (isMusicStarted)
                 {
                     soundFXManager.StartFadeOutBackgroundMusic(2, 5);
@@ -102,17 +102,17 @@ public class StressManager : MonoBehaviour
             // stress player
             if (stress.StressVariationAbsolute() > 0 && stress.StressVariationTendancy() > 0)
             {
-                Debug.Log("StressInfluence: stress player");
+                //Debug.Log("StressInfluence: stress player");
                 if (!isStormStarted)
                 {
-                    Debug.Log("Storm started");
+                    //Debug.Log("Storm started");
                     soundFXManager.StartFadeOutBackgroundMusic(0, 5);
                     soundFXManager.StartFadeInBackgroundMusic(1, 5, 0.5f);
                     isStormStarted = true;
                 }
                 else if (!isMusicStarted)
                 {
-                    Debug.Log("Music started");
+                    //Debug.Log("Music started");
                     soundFXManager.StartFadeInBackgroundMusic(2, 5, 1.0f);
                     isMusicStarted = true;
                 }
@@ -133,7 +133,7 @@ public class StressManager : MonoBehaviour
                 if (Random.value < spawnProbability)
                 {
                     monsterManager.SpawnMonster();
-                    Debug.Log("Monster spawned");
+                    //Debug.Log("Monster spawned");
                 }
             }
             yield return new WaitForSeconds(10);

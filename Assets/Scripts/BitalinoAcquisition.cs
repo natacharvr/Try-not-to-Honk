@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class BitalinoScript : MonoBehaviour
 {
+    public static BitalinoScript instance;
     // Class Variables
     private PluxDeviceManager pluxDevManager;
     public EcgUI ecg;
@@ -33,6 +34,19 @@ public class BitalinoScript : MonoBehaviour
     private bool isConnectionDone = false;
     private bool isConnecting = false;
     public bool isAcquisitionStarted = false;
+    public bool connect = true;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);  // Ensure only one instance of SoundFXManager exists
+        }
+    }
 
 
     // Start is called before the first frame update
@@ -49,6 +63,10 @@ public class BitalinoScript : MonoBehaviour
     // Update function, being constantly invoked by Unity.
     private void Update()
     {
+        if (!connect)
+        {
+            return;
+        }
         if (isScanning || isConnecting || isAcquisitionStarted)
         {
             return;
