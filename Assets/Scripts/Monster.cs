@@ -15,13 +15,24 @@ public abstract class Monster : MonoBehaviour
     private float threshold = 0.1f;
     private MazeRoom room;
     private bool playerSpotted;
+    private float perception = 10;
+    private float chaseTime = 2;
+
 
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         playerSpotted = false;
-        //Debug.Log("rigidbody" + rb);
+    }
+
+    public void SetPerception(float perception)
+    {
+        this.perception = perception;
+    }
+     public void SetChaseTime(float chaseTime)
+    {
+        this.chaseTime = chaseTime;
     }
 
     public void SetManager(MonsterManager manager)
@@ -44,44 +55,95 @@ public abstract class Monster : MonoBehaviour
 
     private void AskRandomDestination()
     {
-        //targetCell = manager.RandomDestination();
         targetCell = manager.RandomRoomDestination(currentCell.room);
     }
 
+    private bool isSpotting = false;
+
     private IEnumerator SpotPlayer()
     {
-        // Player detection (if player in field of view)
+        if (isSpotting) yield break;  // Prevent multiple coroutine instances
+        isSpotting = true;
+
+        float visionAngle = 45f; // Adjust the vision cone angle
+        int rayCount = 5; // Number of rays in the cone
+        float stepAngle = visionAngle / (rayCount - 1);
+
+        bool playerSeen = false;
         RaycastHit hit;
         LayerMask layerMask = LayerMask.GetMask("Labyrinth", "Player");
-        // Does the ray intersect any objects excluding the player layer
-        if ((Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask)) && hit.collider.tag == "Player")
+
+        for (int i = 0; i < rayCount; i++)
         {
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
-            Debug.Log("Player spotted");
-            List<MazeCell> tempPath = manager.PathToPlayer(currentCell);
-            if (tempPath != null)
-            { 
-                path = tempPath; 
-                playerSpotted = true;
-                yield return new WaitForSeconds(1);
-                playerSpotted = false;
+            float angle = -visionAngle / 2 + i * stepAngle;
+            Vector3 direction = Quaternion.Euler(0, angle, 0) * transform.forward;
+
+            if (Physics.Raycast(transform.position, direction, out hit, perception, layerMask) && hit.collider.CompareTag("Player"))
+            {
+                Debug.DrawRay(transform.position, direction * hit.distance, Color.yellow);
+                Debug.Log("Player spotted!");
+                playerSeen = true;
+                break; // Stop checking after spotting the player
+            }
+            else
+            {
+                Debug.DrawRay(transform.position, direction * perception, Color.white);
             }
         }
-        else
+
+        if (playerSeen)
         {
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 1000, Color.white);
-            //Debug.Log("Did not Hit");
+            List<MazeCell> tempPath = manager.PathToPlayer(currentCell);
+            if (tempPath != null)
+            {
+                path = tempPath;
+                playerSpotted = true;
+                yield return new WaitForSeconds(chaseTime);  // Wait before checking again
+            }
+        } else
+        {
+            isSpotting = false;
+            yield break;
         }
 
+
+        // **Only reset playerSpotted if we lose sight for multiple checks**
+        bool lostSight = true;
+        for (int i = 0; i < 3; i++)  // Check 3 times before giving up
+        {
+            yield return new WaitForSeconds(1);
+            for (int j = 0; j < rayCount; j++)
+            {
+                float angle = -visionAngle / 2 + j * stepAngle;
+                Vector3 direction = Quaternion.Euler(0, angle, 0) * transform.forward;
+
+                if (Physics.Raycast(transform.position, direction, out hit, perception, layerMask) && hit.collider.CompareTag("Player"))
+                {
+                    lostSight = false;
+                    break;
+                }
+            }
+            if (!lostSight) break;
+        }
+
+        if (lostSight)
+        {
+            Debug.Log("Lost sight of player");
+            playerSpotted = false;
+        }
+
+        isSpotting = false;
     }
+
 
     void FixedUpdate()
     {
         if (!playerSpotted) {
             StartCoroutine(SpotPlayer());
         }
-        
-        while (path == null || path.Count <= 1)
+        int attempts = 0;
+
+        while( (path == null || path.Count <= 1) && attempts < 10)
         {
             if (playerSpotted)
             {
@@ -97,18 +159,50 @@ public abstract class Monster : MonoBehaviour
                 AskRandomDestination();
                 path = manager.Path(currentCell, targetCell);
             }
+            attempts++;
         }
-        
-        Vector3 direction = path[1].transform.position - transform.position;
+
+        if (path == null || path.Count == 0)
+        {
+            rb.velocity = Vector3.zero;  // Stop movement
+            return;
+        }
+
+
+        Vector3 direction;
+        if (path.Count > 1)
+        {
+             direction = path[1].transform.position - transform.position;
+        } else if (path.Count == 1)
+        {
+            direction = manager.PlayerPos() - transform.position;
+        }
+        else
+        {
+            direction = Vector3.zero;
+        }
         direction.Normalize();
+        //if (direction.magnitude > 0.1f) // Avoid rotating for very small movements
+        //{
+        //    Quaternion targetRotation = Quaternion.LookRotation(direction);
+        //    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * 4);
+        //}
+        direction.y = 0;
+
         if (direction.magnitude > 0.1f) // Avoid rotating for very small movements
         {
             Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * 4); ;
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * 4);
         }
 
+        // Ensure the monster stays upright
+        Vector3 fixedRotation = transform.eulerAngles;
+        fixedRotation.x = 0;
+        fixedRotation.z = 0;
+        transform.eulerAngles = fixedRotation;
         //Vector3 movement = transform.TransformDirection(direction);
         rb.AddForce(direction * speed);
+        //rb.velocity = direction * speed;
     }
 
     public void SetCell(MazeCell cell)

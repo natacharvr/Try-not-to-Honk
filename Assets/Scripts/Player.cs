@@ -68,18 +68,6 @@ public class Player : MonoBehaviour
         SetCell(mazeInstance.GetCell(new IntVector2(xPos, zPos)));
     }
 
-    //void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.gameObject.CompareTag("PickUp"))
-    //    {
-    //        other.gameObject.SetActive(false);
-    //        count = count + 1;
-    //        SetCountText();
-
-    //        audio.Play();
-    //    }
-
-    //}
 
 
     //public void Replay()
@@ -122,7 +110,6 @@ public class Player : MonoBehaviour
     //}
     public MazeCell GetCurrentCell()
     {
-        //Debug.Log(currentCell);
         return currentCell;
     }
 

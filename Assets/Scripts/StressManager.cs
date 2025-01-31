@@ -33,7 +33,7 @@ public class StressManager: MonoBehaviour
     private void Start()
     {
         monsterManager.SetSpeed(monsterSpeed);
-        //heartRate = stress.GetHeartRate();
+        StartCoroutine(StressInfluence());
     }
 
     public void SetMaze(Maze maze)
@@ -48,20 +48,22 @@ public class StressManager: MonoBehaviour
         player.SetSpeed(playerSpeed);
     }
 
-    void Update()
+    private IEnumerator StressInfluence()
     {
         // if heart variation is negative
         // help player
         // TODO adjust
-        if ((stress.StressVariation() < 0) && (Input.GetKeyDown(KeyCode.H)))
+        if (stress.StressVariationAbsolute() < 0)
         {
             // accelerate player
-            playerSpeed = playerSpeed - 0.1f * stress.StressVariation(); // With a minus because stress is negative
+            playerSpeed = Mathf.Min(15, playerSpeed - 0.1f * stress.StressVariationAbsolute()); // With a minus because stress is negative
+            player.SetSpeed(playerSpeed);
             // slow down monsters
-            monsterSpeed = monsterSpeed + 0.1f * stress.StressVariation(); // With a plus because stress is negative
+            monsterSpeed = Mathf.Max(monsterSpeed + 0.1f * stress.StressVariationAbsolute(), 2); // With a plus because stress is negative
+            monsterManager.SetSpeed(monsterSpeed);
 
             // show help for path
-            int nb_help = Mathf.Abs(Mathf.FloorToInt(stress.StressVariation()));
+            int nb_help = Mathf.Abs(Mathf.FloorToInt(stress.StressVariationAbsolute()));
             MazeCell origin = player.GetCurrentCell();
             MazeCell destination = maze.GetDestination();
 
@@ -76,15 +78,17 @@ public class StressManager: MonoBehaviour
 
         // if heart variation is positive
         // stress player
-        if ((stress.StressVariation() > 0) && (Input.GetKeyDown(KeyCode.G)))
+        if (stress.StressVariationAbsolute() > 0)
         {
             // slow down player
-            playerSpeed = playerSpeed - 0.1f * stress.StressVariation();
+            playerSpeed = Mathf.Max(playerSpeed - 0.1f * stress.StressVariationAbsolute(), 1);
+            player.SetSpeed(playerSpeed);
             // accelerate monsters
-            monsterSpeed = monsterSpeed + 0.1f * stress.StressVariation();
+            monsterSpeed = Mathf.Min(15, monsterSpeed + 0.1f * stress.StressVariationAbsolute());
+            monsterManager.SetSpeed(monsterSpeed);
 
         }
-
+        yield return new WaitForSeconds(10);
     }
 
     public List<MazeCell> GetPath(MazeCell from, MazeCell to)

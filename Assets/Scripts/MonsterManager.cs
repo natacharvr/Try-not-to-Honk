@@ -16,6 +16,8 @@ public class MonsterManager : MonoBehaviour
     private List<Snake> snakes;
 
     private Dijkstra dijkstra;
+    public float perception = 10;
+    public float chaseTime = 2;
 
 
     public void SetMaze(Maze maze)
@@ -48,6 +50,8 @@ public class MonsterManager : MonoBehaviour
             s.SetMaze(maze);
             s.SetLocation(maze.GetCell(maze.RandomCoordinates));
             s.SetSpeed(speed);
+            s.SetPerception(perception);
+            s.SetChaseTime(chaseTime);
         }
 
         // Snakes
@@ -59,6 +63,8 @@ public class MonsterManager : MonoBehaviour
             s.SetMaze(maze);
             s.SetLocation(maze.GetCell(maze.RandomCoordinates));
             s.SetSpeed(speed);
+            s.SetPerception(perception);
+            s.SetChaseTime(chaseTime);
         }
     }
 
@@ -97,6 +103,11 @@ public class MonsterManager : MonoBehaviour
         return null;
     }
 
+    public Vector3 PlayerPos()
+    {
+        return player.transform.position;
+    }
+
     public List<MazeCell> Path(MazeCell currentCell, MazeCell targetCell)
     {
         return dijkstra.Path(currentCell, targetCell);
@@ -113,6 +124,33 @@ public class MonsterManager : MonoBehaviour
         foreach (Snake s in snakes)
         {
             s.SetSpeed(speed);
+        }
+    }
+
+    public void SetPerception(float perception)
+    {
+        this.perception = perception;
+        foreach (Spider s in spiders)
+        {
+            s.SetPerception(perception);
+        }
+
+        foreach (Snake s in snakes)
+        {
+            s.SetPerception(perception);
+        }
+    }
+
+    public void SetChaseTime(float chaseTime)
+    {
+        this.chaseTime = chaseTime;
+        foreach (Spider s in spiders)
+        {
+            s.SetChaseTime(chaseTime);
+        }
+        foreach (Snake s in snakes)
+        {
+            s.SetChaseTime(chaseTime);
         }
     }
 }

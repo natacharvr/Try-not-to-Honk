@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 
 public class GameManager : MonoBehaviour
@@ -25,24 +26,45 @@ public class GameManager : MonoBehaviour
     public StressManager stressManager;
 
     // UI
+    public GameObject menuPanel;
     public GameObject endPanelWin;
     public GameObject endPanelLoose;
     public GameUI gameUI;
     public float complexity;
     private float MaxTime;
 
+    // bitalino
+    [SerializeField] private BitalinoScript bitalino;
+    [SerializeField] private Button startButton; 
+
     // Audio
-    [SerializeField] private AudioClip rainSound;
+    //[SerializeField] private AudioClip rainSound;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(BeginGame());
+        endPanelWin.SetActive(false);
+        endPanelLoose.SetActive(false);
+        gameUI.gameObject.SetActive(false);
+        menuPanel.SetActive(true);
+        startButton.interactable = false;
+        StartCoroutine(bitalinoConnected());
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator bitalinoConnected()
+    {
+        bool start = false;
+        while (!start)
+        {
+            start = bitalino.isAcquisitionStarted;
+            yield return new WaitForSeconds(1);
+        }
+        startButton.interactable = true;
+    }
+
+        // Update is called once per frame
+        void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -70,6 +92,7 @@ public class GameManager : MonoBehaviour
         //UI
         endPanelWin.SetActive(false);
         endPanelLoose.SetActive(false);
+        menuPanel.SetActive(false);
         gameUI.gameObject.SetActive(false);
         //timerText.gameObject.SetActive(false);
 
@@ -109,7 +132,8 @@ public class GameManager : MonoBehaviour
         gameUI.gameObject.SetActive(true);
 
         // Audio 
-        SoundFXManager.instance.PlaySoundFXClip(rainSound, transform, 0.5f);
+        //SoundFXManager.instance.PlaySoundFXClip(rainSound, transform, 0.5f);
+        SoundFXManager.instance.PlayBackgroundMusic(2, 1.0f, true);
 
     }
 
@@ -120,6 +144,7 @@ public class GameManager : MonoBehaviour
         playerCameraInstance.gameObject.SetActive(false);
         gameUI.gameObject.SetActive(false);
         stressManager.SaveStressUser();
+        SoundFXManager.instance.StopAllSoundFX();
     }
 
     public void Loose()
@@ -129,8 +154,13 @@ public class GameManager : MonoBehaviour
         playerCameraInstance.gameObject.SetActive(false);
         gameUI.gameObject.SetActive(false);
         stressManager.SaveStressUser();
+        SoundFXManager.instance.StopAllSoundFX();
     }
 
+    public void StartGame()
+    {
+        StartCoroutine(BeginGame());
+    }
     public void RestartGame()
     {
         Debug.Log("Game Restarted");
@@ -144,6 +174,8 @@ public class GameManager : MonoBehaviour
             Destroy(playerCameraInstance.gameObject);
         }
         monsterManager.EndGame();
+        SoundFXManager.instance.StopAllSoundFX();
+
         StartCoroutine(BeginGame());
     }
     float CalculateTime()

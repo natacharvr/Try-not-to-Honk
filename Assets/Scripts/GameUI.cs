@@ -9,6 +9,7 @@ public class GameUI : MonoBehaviour
     private float MaxTime;
     private float timer;
     public TextMeshProUGUI timerText;
+    public TextMeshProUGUI bpmText;
     private float life;
     public Image greenLife;
     private float maxLife = 100;
@@ -51,6 +52,11 @@ public class GameUI : MonoBehaviour
     private void SetLifeBar()
     {
         greenLife.fillAmount = life / maxLife;
+    }
+
+    public void SetBpmText(float bpm)
+    {
+        bpmText.text = bpm.ToString("F0") + "BPM";
     }
 
 }

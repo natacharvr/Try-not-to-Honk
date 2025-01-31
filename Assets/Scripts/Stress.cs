@@ -4,8 +4,18 @@ using UnityEngine;
 
 public class Stress : MonoBehaviour
 {
-    [SerializeField] private float heartRate;
+    private float heartRate;
+    private float previousHeartRate;
+    public EcgUI ecgUI;
     public float calmHeartRate = 80;
+    private float spiderPeak = 0;
+    private float snakePeak = 0;
+    [SerializeField] private GameUI gameUI;
+
+    private void Start()
+    {
+        StartCoroutine(UpdateHeartRate());
+    }
 
     public float GetHeartRate()
     {
@@ -18,13 +28,25 @@ public class Stress : MonoBehaviour
         this.calmHeartRate = calmHeartRate;
     }
 
-    public void UpdateHeartRate()
-    {
-        // TODO fetch heart rate from sensor
+    private IEnumerator UpdateHeartRate()
+    {   
+        while (true)
+        {
+            previousHeartRate = heartRate;
+            heartRate = ecgUI.GetHeartRate();
+            gameUI.SetBpmText(heartRate);
+            yield return new WaitForSeconds(1);
+        }
     }
-    public float StressVariation()
+
+    public float StressVariationAbsolute()
     {
         return heartRate - calmHeartRate;
+    }
+
+    public float StressVariationInstant()
+    {
+        return heartRate - previousHeartRate;
     }
 
 }
