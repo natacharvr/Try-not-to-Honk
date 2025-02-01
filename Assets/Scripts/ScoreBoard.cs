@@ -82,5 +82,10 @@ public class ScoreBoard : MonoBehaviour
         titleText.text = $"Scoreboard for {userName}";
     }
 
+    public int GetScore(string user)
+    {
+        return PlayerPrefs.GetInt(user + "AvStress", 0);
+    }
+
 
 }

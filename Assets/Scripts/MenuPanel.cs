@@ -12,22 +12,39 @@ public class MenuPanel : MonoBehaviour
     [SerializeField] private TextMeshProUGUI bpmText;
     [SerializeField] private GameObject restartCalibrationButton;
     [SerializeField] private Stress stress;
+    [SerializeField] private ScoreBoard scoreBoard;
+    [SerializeField] private GameObject title;
+    //[SerializeField] private GameObject scoreObject;
+    [SerializeField] private TextMeshProUGUI scoreText;
     private string username;
     private bool isUsernameSet = false;
     private bool isBitalinoConnected = false;
     private float minBpm = 200;
-
+    private int savedScore = 0;
+    private bool stopCalib = false;
 
     private void Start()
     {
         startButton.interactable = false;
         restartCalibrationButton.SetActive(false);
         usernameInput.onValueChanged.AddListener(delegate { ValueChangeCheck(); });
+        scoreText.gameObject.SetActive(false);
     }
 
 
     private void ValueChangeCheck()
     {
+        if (usernameInput.text != null) {
+            username = usernameInput.text;
+            savedScore = scoreBoard.GetScore(username);
+            if (savedScore != 0) {
+                UpdateUser(savedScore);
+            } else
+            {
+                scoreText.gameObject.SetActive(false);
+            }
+        }
+
         if (usernameInput.text.Length > 0 && isBitalinoConnected)
         {
             startButton.interactable = true;
@@ -53,6 +70,7 @@ public class MenuPanel : MonoBehaviour
 
     public void SetBpmText(float bpm)
     {
+        title.SetActive(false);
         if (bpm < minBpm)
         {
             minBpm = bpm;
@@ -68,8 +86,11 @@ public class MenuPanel : MonoBehaviour
         yield return new WaitForSeconds(5);
         for (int i = 0; i < 20; i++)
         {
-            SetBpmText(stress.GetHeartRate());
-            yield return new WaitForSeconds(0.3f);
+            if (!stopCalib)
+            {
+                SetBpmText(stress.GetHeartRate());
+                yield return new WaitForSeconds(0.3f);
+            }
         }
         stress.SetCalmHeartRate(minBpm);
         isBitalinoConnected = true;
@@ -82,6 +103,7 @@ public class MenuPanel : MonoBehaviour
     {
         minBpm = 200;
         bitalinoConnected();
+        stopCalib = false;
     }
 
     public void NoDevice()
@@ -99,5 +121,19 @@ public class MenuPanel : MonoBehaviour
 
         }
         ValueChangeCheck();
+    }
+
+    private void UpdateUser(int score)
+    {
+        scoreText.gameObject.SetActive(true);
+        scoreText.text = username + " saved score : " + score;
+    }
+
+    public void useValueSaved()
+    {
+        stopCalib = true;
+        minBpm = savedScore;
+        SetBpmText(savedScore);
+        stress.SetCalmHeartRate(minBpm);
     }
 }
