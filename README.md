@@ -1,4 +1,4 @@
-# Try not to honk
+# Try not to stress
 ## EVHI project
 
 ### Vidéo de présentation :
